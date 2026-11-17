@@ -1,0 +1,1411 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pawwwpack Tools</title>
+<meta name="description" content="หารค่าอาหาร เกมวงเหล้า และนับถอยหลัง ในหน้าเดียว — คิดในเครื่อง ไม่บันทึกข้อมูล">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cpath d='M100 188C100 188 34 134 34 86C34 48 64 20 100 20C136 20 166 48 166 86C166 134 100 188 100 188Z' fill='%239E4436'/%3E%3Ccircle cx='100' cy='88' r='48' fill='%23FFF3E6'/%3E%3Ccircle cx='80' cy='84' r='13' fill='%232A140E'/%3E%3Ccircle cx='120' cy='84' r='13' fill='%232A140E'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Mitr:wght@300;400;500&display=swap">
+<style>
+/* ── shell: one tab bar, three tools; each tool's styles are scoped to its own section ── */
+:root { --bar: 60px; }
+* { box-sizing: border-box; }
+html { scroll-padding-top: calc(var(--bar) + 8px); }
+body { margin: 0; background: #FBF8F3; font-family: 'Mitr', Tahoma, sans-serif; }
+body.dark { background: #1B1E3D; }
+[hidden] { display: none !important; }
+.switcher { position: sticky; top: 0; z-index: 20; height: var(--bar); display: flex; align-items: center; justify-content: center; padding: 0 12px; background: rgba(251,248,243,.92); backdrop-filter: blur(10px); border-bottom: 1px solid #E3D8C8; }
+body.dark .switcher { background: rgba(27,30,61,.85); border-color: rgba(255,255,255,.12); }
+.switcher nav { display: flex; gap: 4px; padding: 4px; border-radius: 999px; background: #F3EADB; max-width: 560px; width: 100%; }
+body.dark .switcher nav { background: rgba(255,255,255,.08); }
+.switcher a { flex: 1; text-align: center; padding: 7px 6px; border-radius: 999px; text-decoration: none; color: #6E5F55; font-size: 14.5px; white-space: nowrap; transition: background .15s, color .15s; }
+.switcher a:hover { color: #3F2E25; }
+body.dark .switcher a { color: #B9B6D3; }
+body.dark .switcher a:hover { color: #FBF3E6; }
+.switcher a[aria-current="page"] { background: #3F2E25; color: #FBF8F3; }
+body.dark .switcher a[aria-current="page"] { background: #FBF3E6; color: #1B1E3D; }
+.switcher a:focus-visible { outline: 3px solid #2F6FA8; outline-offset: 2px; }
+.tool { display: block; }
+@media (max-width: 400px) { .switcher a { font-size: 13px; padding: 7px 2px; } }
+
+/* ═══ 🧾 หารค่าอาหาร ═══ */
+#t-split {
+  --bg: #FBF8F3; --card: #FFFFFF; --soft: #F3EADB; --line: #E3D8C8;
+  --ink: #3F2E25; --muted: #6E5F55; --paw: #9E4436; --paw-dark: #7C342A; --paw-soft: #FFF3E6;
+  --owe: #DC2626; --get: #047857;
+}
+#t-split * { box-sizing: border-box; }
+#t-split { margin: 0; background: var(--bg); color: var(--ink); font: 300 16px/1.6 'Mitr', Tahoma, sans-serif; }
+#t-split button, #t-split input { font: inherit; color: inherit; }
+#t-split .wrap { max-width: 560px; margin: 0 auto; padding: 24px 16px 64px; display: flex; flex-direction: column; gap: 18px; }
+#t-split header { display: flex; align-items: center; gap: 12px; }
+#t-split header h1 { margin: 0; font: 600 26px/1.2 'Fredoka', 'Mitr', sans-serif; }
+#t-split header p { margin: 0; font-size: 14px; color: var(--muted); }
+#t-split .card { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+#t-split .card h2 { margin: 0; font: 500 17px 'Mitr', sans-serif; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+#t-split .card h2 small { font-weight: 300; font-size: 13px; color: var(--muted); }
+#t-split .add { display: flex; gap: 8px; }
+#t-split .add input { flex: 1; min-width: 0; }
+#t-split input[type=text], #t-split input[inputmode] { height: 44px; padding: 0 14px; border: 1.5px solid var(--line); border-radius: 14px; background: var(--bg); outline: none; }
+#t-split input:focus { border-color: var(--paw); background: #fff; }
+#t-split .btn { height: 44px; padding: 0 18px; border: 0; border-radius: 999px; background: var(--paw); color: #fff; font-weight: 400; cursor: pointer; white-space: nowrap; }
+#t-split .btn:hover { background: var(--paw-dark); }
+#t-split .btn.ghost { background: transparent; color: var(--muted); border: 1.5px solid var(--line); }
+#t-split .btn.ghost:hover { color: var(--ink); border-color: var(--muted); }
+#t-split .people { display: flex; flex-direction: column; gap: 8px; }
+#t-split .person { display: grid; grid-template-columns: 1fr 118px auto auto; gap: 8px; align-items: center; padding: 8px 8px 8px 14px; background: var(--bg); border-radius: 16px; }
+#t-split .person .name { font-weight: 400; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#t-split .person input { width: 100%; text-align: right; background: #fff; }
+#t-split .person input.bad { border-color: var(--owe); }
+#t-split .eat { display: flex; align-items: center; gap: 4px; font-size: 13px; color: var(--muted); cursor: pointer; user-select: none; }
+#t-split .eat input { width: 18px; height: 18px; accent-color: var(--paw); margin: 0; }
+#t-split .del { width: 36px; height: 36px; border: 0; border-radius: 50%; background: transparent; color: var(--muted); cursor: pointer; font-size: 18px; }
+#t-split .del:hover { background: #FEE2E2; color: var(--owe); }
+#t-split .empty { text-align: center; color: var(--muted); font-size: 14px; padding: 12px 0; }
+#t-split .hint { font-size: 13px; color: var(--muted); margin: 0; }
+#t-split .sum { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+#t-split .sum div { background: var(--soft); border-radius: 16px; padding: 10px 12px; display: flex; flex-direction: column; }
+#t-split .sum small { font-size: 12.5px; color: var(--muted); }
+#t-split .sum b { font: 600 22px 'Fredoka', sans-serif; }
+#t-split .rows { display: flex; flex-direction: column; }
+#t-split .row { display: flex; justify-content: space-between; gap: 12px; padding: 9px 2px; border-bottom: 1px solid var(--soft); font-size: 15px; }
+#t-split .row:last-child { border-bottom: 0; }
+#t-split .row .owe { color: var(--owe); font-weight: 400; }
+#t-split .row .get { color: var(--get); font-weight: 400; }
+#t-split .row .even { color: var(--muted); }
+#t-split .pay { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: var(--paw-soft); border-radius: 16px; }
+#t-split .pay .who { flex: 1; min-width: 0; }
+#t-split .pay .arrow { color: var(--paw); }
+#t-split .pay b { font: 600 20px 'Fredoka', sans-serif; color: var(--paw); white-space: nowrap; }
+#t-split .done { text-align: center; padding: 14px; background: #ECFDF5; color: var(--get); border-radius: 16px; }
+#t-split .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+#t-split .actions .btn { flex: 1; }
+#t-split .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 16px); opacity: 0; background: var(--ink); color: #fff; padding: 8px 18px; border-radius: 999px; font-size: 14px; transition: .2s; pointer-events: none; }
+#t-split .toast.on { opacity: 1; transform: translate(-50%, 0); }
+#t-split footer { text-align: center; font-size: 13px; color: var(--muted); }
+#t-split footer a { color: var(--paw); }
+@media (max-width: 420px) {
+#t-split .person { grid-template-columns: 1fr 100px auto; }
+#t-split .person .eat { grid-column: 1; grid-row: 2; }
+#t-split .person .del { grid-column: 3; grid-row: 1; }
+#t-split .sum b { font-size: 19px; }
+}
+
+/* ═══ 🎉 เกมวงเหล้า ═══ */
+#t-party {
+  --bg: #FBF8F3; --card: #FFFFFF; --soft: #F3EADB; --line: #E3D8C8;
+  --ink: #3F2E25; --muted: #6E5F55; --paw: #9E4436; --paw-dark: #7C342A; --paw-soft: #FFF3E6;
+  --sober: #047857;
+}
+#t-party * { box-sizing: border-box; }
+#t-party { margin: 0; background: var(--bg); color: var(--ink); font: 300 16px/1.6 'Mitr', Tahoma, sans-serif; }
+#t-party button, #t-party input { font: inherit; color: inherit; }
+#t-party [hidden] { display: none !important; }
+#t-party .wrap { max-width: 560px; margin: 0 auto; padding: 24px 16px 64px; display: flex; flex-direction: column; gap: 16px; }
+#t-party header { display: flex; align-items: center; gap: 12px; }
+#t-party header .emoji { font-size: 40px; line-height: 1; }
+#t-party header h1 { margin: 0; font: 600 26px/1.2 'Fredoka', 'Mitr', sans-serif; }
+#t-party header p { margin: 0; font-size: 14px; color: var(--muted); }
+#t-party .switch { margin-left: auto; display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); cursor: pointer; white-space: nowrap; }
+#t-party .switch input { appearance: none; width: 40px; height: 24px; border-radius: 12px; background: var(--line); position: relative; cursor: pointer; transition: .2s; margin: 0; }
+#t-party .switch input::after { content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: .2s; }
+#t-party .switch input:checked { background: var(--sober); }
+#t-party .switch input:checked::after { left: 19px; }
+#t-party .card { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+#t-party .card h2 { margin: 0; font: 500 17px 'Mitr', sans-serif; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+#t-party .card h2 small { font-weight: 300; font-size: 13px; color: var(--muted); }
+#t-party .add { display: flex; gap: 8px; }
+#t-party .add input { flex: 1; min-width: 0; }
+#t-party input[type=text], #t-party input[inputmode] { height: 44px; padding: 0 14px; border: 1.5px solid var(--line); border-radius: 14px; background: var(--bg); outline: none; }
+#t-party input:focus { border-color: var(--paw); background: #fff; }
+#t-party .btn { height: 44px; padding: 0 18px; border: 0; border-radius: 999px; background: var(--paw); color: #fff; cursor: pointer; white-space: nowrap; }
+#t-party .btn:hover { background: var(--paw-dark); }
+#t-party .btn:disabled { opacity: .45; cursor: default; }
+#t-party .btn.ghost { background: #fff; color: var(--ink); border: 1.5px solid var(--line); }
+#t-party .btn.ghost:hover { border-color: var(--muted); }
+#t-party .btn.big { height: 52px; font-size: 17px; flex: 1; }
+#t-party .names { display: flex; flex-wrap: wrap; gap: 6px; }
+#t-party .name { display: inline-flex; align-items: center; gap: 4px; padding: 4px 6px 4px 12px; border-radius: 999px; background: var(--soft); font-size: 14px; }
+#t-party .name button { width: 22px; height: 22px; border: 0; border-radius: 50%; background: transparent; cursor: pointer; color: var(--muted); }
+#t-party .name button:hover { background: #FEE2E2; color: #DC2626; }
+#t-party .hint { font-size: 13px; color: var(--muted); margin: 0; }
+#t-party .games { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+#t-party .game { all: unset; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 12px 4px; border-radius: 18px; background: #fff; border: 1.5px solid var(--line); text-align: center; transition: .15s; }
+#t-party .game:hover { transform: translateY(-2px); border-color: var(--paw); }
+#t-party .game[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+#t-party .game span { font-size: 30px; line-height: 1.2; }
+#t-party .game b { font-weight: 400; font-size: 13.5px; }
+#t-party .game:focus-visible { outline: 3px solid #2F6FA8; outline-offset: 2px; }
+#t-party .chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+#t-party .chip { height: 32px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--line); background: #fff; font-size: 13.5px; cursor: pointer; }
+#t-party .chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+#t-party .chip.num { width: 36px; padding: 0; }
+#t-party .chip.num[aria-pressed="true"] { background: var(--paw); border-color: var(--paw); }
+#t-party .turn { text-align: center; }
+#t-party .turn span { display: inline-block; padding: 6px 16px; border-radius: 999px; background: var(--ink); color: #fff; font-size: 14px; }
+#t-party .center { text-align: center; }
+#t-party .muted { color: var(--muted); font-size: 13.5px; }
+#t-party .result { min-height: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+#t-party .result b { font: 600 24px/1.3 'Fredoka', 'Mitr', sans-serif; color: var(--paw); }
+#t-party .pop { animation: pop .35s ease-out; }
+@keyframes pop { from { transform: scale(.7); opacity: 0 } }
+#t-party .row { display: flex; gap: 8px; }
+#t-party .range { font: 700 52px/1.1 'Fredoka', sans-serif; font-variant-numeric: tabular-nums; }
+#t-party .bar { height: 10px; border-radius: 5px; background: var(--soft); overflow: hidden; margin: 10px 24px 0; }
+#t-party .bar i { display: block; height: 100%; background: var(--paw); transition: .5s; }
+#t-party .hist { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+#t-party .hist span { font-size: 12.5px; padding: 3px 10px; border-radius: 999px; background: var(--soft); color: var(--muted); }
+#t-party .warn { color: #DC2626; font-size: 13px; text-align: center; margin: -6px 0 0; }
+#t-party .boom { border-radius: 22px; padding: 22px; text-align: center; color: #fff; background: radial-gradient(circle at 50% 20%, #D4674A, #9E4436 60%, #5E261E); display: flex; flex-direction: column; gap: 6px; animation: shake .5s; }
+#t-party .boom .e { font-size: 48px; line-height: 1; }
+#t-party .boom b { font: 700 28px 'Fredoka', 'Mitr', sans-serif; }
+@keyframes shake { 10%, 50%, 90% { transform: translateX(-6px) } 30%, 70% { transform: translateX(6px) } }
+#t-party .wheel-box { position: relative; width: min(300px, 80vw); aspect-ratio: 1; margin: 0 auto; }
+#t-party .wheel-box svg.w { width: 100%; height: 100%; transition: transform 3.6s cubic-bezier(.17,.67,.12,.99); filter: drop-shadow(0 8px 18px rgba(63,46,37,.2)); }
+#t-party .wheel-box .pin { position: absolute; top: -6px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 14px solid transparent; border-right: 14px solid transparent; border-top: 26px solid var(--ink); z-index: 1; }
+#t-party .edit { background: var(--bg); border: 1px solid var(--line); border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+#t-party .edit textarea { font: inherit; font-size: 14px; border: 1.5px solid var(--line); border-radius: 12px; padding: 8px 12px; min-height: 120px; resize: vertical; outline: none; }
+#t-party .edit textarea:focus { border-color: var(--paw); }
+#t-party .link { all: unset; cursor: pointer; color: var(--paw); text-decoration: underline; font-size: 13px; align-self: flex-start; }
+#t-party .dice { all: unset; cursor: pointer; display: flex; justify-content: center; gap: 14px; padding: 12px 0; width: 100%; }
+#t-party .dice svg { width: 84px; height: 84px; filter: drop-shadow(0 6px 10px rgba(63,46,37,.18)); }
+#t-party .rolling svg { animation: roll .14s linear infinite; }
+@keyframes roll { 50% { transform: rotate(14deg) scale(.94) } }
+#t-party .pcard { all: unset; cursor: pointer; display: block; width: min(270px, 78vw); margin: 0 auto; }
+#t-party .pcard div { aspect-ratio: 5 / 7; border-radius: 24px; padding: 22px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; box-shadow: 0 14px 30px rgba(63,46,37,.18); }
+#t-party .pcard p { margin: 0; font: 600 21px/1.4 'Fredoka', 'Mitr', sans-serif; }
+#t-party .pcard small { font-size: 12.5px; padding: 3px 12px; border-radius: 999px; background: rgba(255,255,255,.7); color: var(--ink); }
+#t-party .back { background: repeating-linear-gradient(45deg, #9E4436 0 14px, #8A3A2F 14px 28px); color: #fff; justify-content: center !important; gap: 10px; }
+#t-party .back p { font-size: 18px; }
+#t-party .d-warm { background: linear-gradient(160deg, #FFE0C0, #F9C08A); }
+#t-party .d-truth { background: linear-gradient(160deg, #E0E7FF, #C7D2FE); }
+#t-party .d-hard { background: linear-gradient(160deg, #F9C08A, #D4674A); }
+#t-party .d-custom { background: linear-gradient(160deg, #DCFCE7, #A7F3D0); }
+#t-party .flip { animation: flip .4s ease-out; }
+@keyframes flip { from { transform: rotateY(90deg) } }
+#t-party footer { text-align: center; font-size: 13px; color: var(--muted); display: flex; flex-direction: column; gap: 4px; }
+#t-party footer a { color: var(--paw); }
+@media (prefers-reduced-motion: reduce) {
+#t-party *, #t-party *::before, #t-party *::after { animation: none !important; transition: none !important; }
+}
+@media (max-width: 400px) {
+#t-party .game b { font-size: 12px; }
+#t-party .range { font-size: 44px; }
+}
+
+/* ═══ 🎆 นับถอยหลัง ═══ */
+#t-countdown {
+  --night: #1B1E3D; --night2: #2A2F5C; --tile: rgba(255,255,255,.09); --line: rgba(255,255,255,.16);
+  --text: #FBF3E6; --muted: #B9B6D3; --gold: #F9C08A; --paw: #D4674A;
+}
+#t-countdown * { box-sizing: border-box; }
+#t-countdown { min-height: calc(100dvh - var(--bar)); }
+#t-countdown { margin: 0; color: var(--text); font: 300 16px/1.6 'Mitr', Tahoma, sans-serif; background: radial-gradient(ellipse at 50% 0%, #3B3478 0%, var(--night2) 35%, var(--night) 75%) fixed, var(--night); }
+#t-countdown button, #t-countdown input { font: inherit; color: inherit; }
+#t-countdown [hidden] { display: none !important; }
+#t-countdown .stars { position: fixed; inset: 0; pointer-events: none; background-image: radial-gradient(1.5px 1.5px at 10% 20%, #fff8, transparent), radial-gradient(1px 1px at 30% 70%, #fff6, transparent), radial-gradient(1.5px 1.5px at 55% 15%, #fff9, transparent), radial-gradient(1px 1px at 75% 40%, #fff7, transparent), radial-gradient(1.5px 1.5px at 88% 80%, #fff8, transparent), radial-gradient(1px 1px at 20% 90%, #fff5, transparent), radial-gradient(1px 1px at 65% 85%, #fff6, transparent), radial-gradient(1.5px 1.5px at 45% 45%, #fff4, transparent); }
+#t-countdown .wrap { position: relative; max-width: 640px; margin: 0 auto; padding: 24px 16px 64px; display: flex; flex-direction: column; gap: 18px; min-height: calc(100dvh - var(--bar)); }
+#t-countdown header { display: flex; align-items: center; gap: 12px; }
+#t-countdown header .emoji { font-size: 38px; line-height: 1; }
+#t-countdown header h1 { margin: 0; font: 600 26px/1.2 'Fredoka', 'Mitr', sans-serif; }
+#t-countdown header p { margin: 0; font-size: 14px; color: var(--muted); }
+#t-countdown .tabs { display: flex; gap: 6px; background: var(--tile); padding: 5px; border-radius: 999px; }
+#t-countdown .tabs button { flex: 1; height: 38px; border: 0; border-radius: 999px; background: transparent; cursor: pointer; font-size: 14.5px; color: var(--muted); }
+#t-countdown .tabs button[aria-pressed="true"] { background: var(--text); color: var(--night); font-weight: 400; }
+#t-countdown .panel { background: var(--tile); border: 1px solid var(--line); border-radius: 22px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+#t-countdown .panel label { font-size: 13px; color: var(--muted); display: flex; flex-direction: column; gap: 4px; }
+#t-countdown .panel input { width: 100%; min-width: 0; height: 44px; padding: 0 14px; border: 1.5px solid var(--line); border-radius: 14px; background: rgba(0,0,0,.18); outline: none; color-scheme: dark; }
+#t-countdown .panel input:focus { border-color: var(--gold); }
+#t-countdown .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+#t-countdown .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+#t-countdown .chip { height: 36px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--line); background: transparent; cursor: pointer; font-size: 14px; }
+#t-countdown .chip[aria-pressed="true"] { background: var(--gold); border-color: var(--gold); color: var(--night); }
+#t-countdown .stage { text-align: center; display: flex; flex-direction: column; gap: 14px; padding: 8px 0; }
+#t-countdown .title { font: 600 clamp(22px, 5vw, 30px)/1.3 'Fredoka', 'Mitr', sans-serif; word-break: break-word; }
+#t-countdown .target { font-size: 14px; color: var(--muted); }
+#t-countdown .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+#t-countdown .tiles.three { grid-template-columns: repeat(3, 1fr); }
+#t-countdown .tile { background: var(--tile); border: 1px solid var(--line); border-radius: 20px; padding: 12px 4px 8px; }
+#t-countdown .tile b { display: block; font: 700 clamp(34px, 10vw, 60px)/1 'Fredoka', sans-serif; font-variant-numeric: tabular-nums; }
+#t-countdown .tile span { font-size: 13px; color: var(--muted); }
+#t-countdown .done { font: 700 clamp(30px, 8vw, 48px)/1.25 'Fredoka', 'Mitr', sans-serif; color: var(--gold); animation: glow 1.6s ease-in-out infinite alternate; }
+@keyframes glow { from { text-shadow: 0 0 8px #F9C08A55 } to { text-shadow: 0 0 26px #F9C08Acc } }
+#t-countdown .actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+#t-countdown .btn { height: 46px; padding: 0 22px; border: 0; border-radius: 999px; background: var(--paw); color: #fff; cursor: pointer; white-space: nowrap; }
+#t-countdown .btn:hover { filter: brightness(1.08); }
+#t-countdown .btn.ghost { background: transparent; border: 1.5px solid var(--line); }
+#t-countdown .btn.ghost:hover { border-color: var(--text); }
+#t-countdown .final { position: fixed; inset: 0; z-index: 5; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(15,16,38,.82); backdrop-filter: blur(4px); pointer-events: none; }
+#t-countdown .final p { margin: 0; font-size: clamp(16px, 3vw, 22px); color: var(--muted); }
+#t-countdown .final b { font: 700 clamp(160px, 45vw, 380px)/1 'Fredoka', sans-serif; color: var(--gold); text-shadow: 0 0 40px #F9C08A88; animation: tick 1s ease-out; }
+@keyframes tick { from { transform: scale(1.5); opacity: 0 } 30% { opacity: 1 } }
+#t-countdown canvas { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 4; }
+#t-countdown.celebrating .wrap { visibility: hidden; }
+#t-countdown .cele { position: fixed; inset: var(--bar) 0 0 0; z-index: 6; display: flex; align-items: center; justify-content: center; padding: 24px 16px; pointer-events: none; text-align: center; background: radial-gradient(ellipse at 50% 55%, rgba(15,16,38,.55), rgba(15,16,38,0) 70%); animation: celeIn .5s ease-out; }
+#t-countdown .cele-in { display: flex; flex-direction: column; align-items: center; gap: min(2vh, 14px); max-width: 100%; }
+#t-countdown .cele-top { margin: 0; font: 600 min(9vw, 10vh, 84px)/1.15 'Fredoka', 'Mitr', sans-serif; color: #FFF6E3; text-shadow: 0 0 18px rgba(255,214,120,.65), 0 4px 18px rgba(0,0,0,.45); }
+#t-countdown .cele-big { margin: 0; font: 700 min(36vw, 36vh, 340px)/0.95 'Fredoka', 'Mitr', sans-serif; letter-spacing: .02em; word-break: break-word; }
+#t-countdown .cele-big.text { font-size: min(14vw, 15vh, 150px); line-height: 1.15; }
+#t-countdown .cele-big .w { display: inline-block; white-space: nowrap; }
+#t-countdown .cele-big i { font-style: normal; display: inline-block; background: linear-gradient(180deg, #FFFBEA 0%, #FFE07A 38%, #FFB443 70%, #FF7A59 100%); background-size: 100% 220%; -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 0 22px rgba(255,190,90,.7)) drop-shadow(0 6px 14px rgba(0,0,0,.4)); animation: letterIn .7s cubic-bezier(.2,1.6,.4,1) both, shimmer 2.4s ease-in-out infinite alternate; }
+#t-countdown .cele-sub { margin: 0; font: 500 min(5vw, 6vh, 34px)/1.3 'Fredoka', 'Mitr', sans-serif; color: #FFE7C2; letter-spacing: .08em; text-shadow: 0 2px 10px rgba(0,0,0,.5); animation: celeIn .8s .9s both; }
+#t-countdown .cele-x { pointer-events: auto; margin-top: min(3vh, 22px); height: 44px; padding: 0 22px; border-radius: 999px; border: 1.5px solid rgba(255,255,255,.35); background: rgba(15,16,38,.45); color: #FBF3E6; cursor: pointer; backdrop-filter: blur(6px); animation: celeIn .6s 1.6s both; }
+#t-countdown .cele-x:hover { background: rgba(15,16,38,.7); }
+#t-countdown:fullscreen .cele { inset: 0; }
+@keyframes celeIn { from { opacity: 0 } }
+@keyframes letterIn { from { opacity: 0; transform: translateY(40%) scale(.3) rotate(-8deg) } }
+@keyframes shimmer { to { background-position: 0 100% } }
+#t-countdown .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 16px); opacity: 0; background: var(--text); color: var(--night); padding: 8px 18px; border-radius: 999px; font-size: 14px; transition: .2s; pointer-events: none; z-index: 9; }
+#t-countdown .toast.on { opacity: 1; transform: translate(-50%, 0); }
+#t-countdown footer { margin-top: auto; text-align: center; font-size: 13px; color: var(--muted); display: flex; flex-direction: column; gap: 4px; }
+#t-countdown footer a { color: var(--gold); }
+#t-countdown:fullscreen .wrap > :not(.stage) { display: none; }
+#t-countdown:fullscreen .wrap { justify-content: center; max-width: 900px; }
+#t-countdown:fullscreen .tile b { font-size: clamp(60px, 12vw, 140px); }
+@media (prefers-reduced-motion: reduce) {
+#t-countdown *, #t-countdown *::before, #t-countdown *::after { animation: none !important; transition: none !important; }
+}
+@media (max-width: 380px) {
+#t-countdown .tiles { gap: 6px; }
+#t-countdown .tile { border-radius: 14px; }
+}
+
+</style>
+</head>
+<body>
+<header class="switcher">
+  <nav aria-label="เลือกเครื่องมือ">
+    <a href="#split">🧾 หารค่าอาหาร</a>
+    <a href="#party">🎉 เกมวงเหล้า</a>
+    <a href="#countdown">🎆 นับถอยหลัง</a>
+  </nav>
+</header>
+
+<section class="tool" id="t-split" hidden>
+<div class="wrap">
+  <header>
+    <svg viewBox="0 0 200 200" width="48" height="48" aria-hidden="true"><path d="M46 62 C38 30 58 18 80 34 Z" fill="#9E4436"/><path d="M154 62 C162 30 142 18 120 34 Z" fill="#9E4436"/><path d="M100 188 C100 188 34 134 34 86 C34 48 64 20 100 20 C136 20 166 48 166 86 C166 134 100 188 100 188 Z" fill="#9E4436"/><circle cx="100" cy="88" r="46" fill="#FFF3E6"/><circle cx="82" cy="84" r="10" fill="#2A140E"/><circle cx="118" cy="84" r="10" fill="#2A140E"/><ellipse cx="100" cy="106" rx="10" ry="7" fill="#2A140E"/></svg>
+    <div>
+      <h1>หารค่าอาหาร</h1>
+      <p>ใส่ชื่อ ใส่ยอดที่จ่าย แล้วดูว่าใครโอนให้ใคร · ไม่บันทึกข้อมูล</p>
+    </div>
+  </header>
+
+  <section class="card">
+    <h2>คนที่ไปกินด้วย <small id="split-count"></small></h2>
+    <form class="add" id="split-addForm" autocomplete="off">
+      <input type="text" id="split-nameInput" placeholder="ชื่อ เช่น มิ้น" maxlength="30" aria-label="ชื่อ">
+      <button class="btn" type="submit">+ เพิ่ม</button>
+    </form>
+    <div class="people" id="split-people"></div>
+    <p class="hint">ช่องยอดเงินพิมพ์บวกกันได้ เช่น <b>120+85</b> · เอาติ๊ก “กิน” ออก ถ้าคนนั้นจ่ายแทนแต่ไม่ได้กิน</p>
+  </section>
+
+  <section class="card" id="split-result" hidden>
+    <div class="sum">
+      <div><small>รวมทั้งหมด</small><b id="split-total">฿0</b></div>
+      <div><small>คนหาร</small><b id="split-eaters">0</b></div>
+      <div><small>ตกคนละ</small><b id="split-share">฿0</b></div>
+    </div>
+    <h2>ใครต้องโอนให้ใคร</h2>
+    <div class="people" id="split-transfers"></div>
+    <h2>ยอดแต่ละคน <small>จ่ายไป − ส่วนที่ต้องจ่าย</small></h2>
+    <div class="rows" id="split-balances"></div>
+    <div class="actions">
+      <button class="btn" type="button" id="split-copyBtn">คัดลอกสรุปไปส่งในแชต</button>
+      <button class="btn ghost" type="button" id="split-resetBtn">เริ่มใหม่</button>
+    </div>
+  </section>
+
+  <footer>Pawwwpack · คำนวณในเครื่องเท่านั้น ปิดหน้านี้แล้วข้อมูลหายหมด<br><a href="#party">เกมวงเหล้า</a> · <a href="#countdown">นับถอยหลัง</a></footer>
+</div>
+<div class="toast" id="split-toast" role="status"></div>
+</section>
+
+<section class="tool" id="t-party" hidden>
+<div class="wrap">
+  <header>
+    <span class="emoji" aria-hidden="true">🎉</span>
+    <div>
+      <h1>เกมวงเหล้า</h1>
+      <p>ส่งมือถือเล่นต่อกันได้เลย · ไม่บันทึกข้อมูล</p>
+    </div>
+    <label class="switch"><input type="checkbox" id="party-sober"> โหมดไม่ดื่ม</label>
+  </header>
+
+  <section class="card">
+    <h2>ผู้เล่น <small id="party-count">ไม่ใส่ชื่อก็เล่นได้</small></h2>
+    <form class="add" id="party-addForm" autocomplete="off">
+      <input type="text" id="party-nameInput" placeholder="ชื่อ เช่น มิ้น (คั่นด้วย , ได้)" maxlength="80" aria-label="ชื่อผู้เล่น">
+      <button class="btn" type="submit">+ เพิ่ม</button>
+    </form>
+    <div class="names" id="party-names"></div>
+  </section>
+
+  <nav class="games" aria-label="เลือกเกม">
+    <button class="game" data-game="bomb"><span>💣</span><b>เลขระเบิด</b></button>
+    <button class="game" data-game="wheel"><span>🎡</span><b>วงล้อปาร์ตี้</b></button>
+    <button class="game" data-game="dice"><span>🎲</span><b>ลูกเต๋า</b></button>
+    <button class="game" data-game="cards"><span>🃏</span><b>สุ่มการ์ด</b></button>
+  </nav>
+
+  <!-- 💣 -->
+  <section class="card" id="party-g-bomb" hidden>
+    <h2>💣 เลขระเบิด <small>ทายทีละคน ใครโดนเลขลับแพ้</small></h2>
+    <div class="chips" id="party-bombMax"></div>
+    <div id="party-bombPlay">
+      <div class="turn" id="party-bombTurn"></div>
+      <div class="center" style="margin-top:10px">
+        <div class="muted">เลขลับอยู่ระหว่าง</div>
+        <div class="range" id="party-bombRange"></div>
+        <div class="bar"><i id="party-bombBar"></i></div>
+        <div class="muted" id="party-bombLeft" style="margin-top:4px"></div>
+      </div>
+      <form class="row" id="party-bombForm" style="margin-top:14px" autocomplete="off">
+        <input inputmode="numeric" id="party-bombGuess" style="flex:1;min-width:0;text-align:center;font-size:20px" aria-label="ทายเลข">
+        <button class="btn" type="submit" style="padding:0 26px">ทาย</button>
+      </form>
+      <p class="warn" id="party-bombWarn"></p>
+    </div>
+    <div id="party-bombLose" hidden></div>
+    <div class="hist" id="party-bombHist"></div>
+    <button class="btn ghost" type="button" id="party-bombReset">เริ่มใหม่</button>
+  </section>
+
+  <!-- 🎡 -->
+  <section class="card" id="party-g-wheel" hidden>
+    <h2>🎡 วงล้อปาร์ตี้ <small>ใส่ช่องเองได้</small></h2>
+    <div class="turn" id="party-wheelTurn"></div>
+    <div class="wheel-box"><div class="pin"></div><svg class="w" id="party-wheel" viewBox="-100 -100 200 200" aria-hidden="true"></svg></div>
+    <div class="result" id="party-wheelResult" aria-live="polite"><span class="muted">กดหมุนเลย!</span></div>
+    <div class="row">
+      <button class="btn big" type="button" id="party-wheelSpin">หมุนเลย!</button>
+      <button class="btn ghost" type="button" id="party-wheelEditBtn" aria-expanded="false" title="แก้ช่องวงล้อ">✏️</button>
+    </div>
+    <div class="edit" id="party-wheelEdit" hidden>
+      <span class="muted">แก้ช่องวงล้อ บรรทัดละ 1 ช่อง (2–12 ช่อง)</span>
+      <textarea id="party-wheelText"></textarea>
+      <button class="link" type="button" id="party-wheelDefault">กลับไปใช้ช่องเริ่มต้น</button>
+    </div>
+  </section>
+
+  <!-- 🎲 -->
+  <section class="card" id="party-g-dice" hidden>
+    <h2>🎲 ลูกเต๋า <small id="party-diceSub">ทอยแล้วทำตามกติกา</small></h2>
+    <div class="chips" id="party-diceOpts"></div>
+    <div id="party-dicePlay">
+      <div class="turn" id="party-diceTurn"></div>
+      <p class="center muted" id="party-diceRound" hidden></p>
+      <button class="dice" type="button" id="party-dice" aria-label="ทอย"></button>
+      <div class="result" id="party-diceResult" aria-live="polite"></div>
+      <div class="hist" id="party-diceScores"></div>
+    </div>
+    <p class="center muted" id="party-diceNeed" hidden>ทอยแข่งต้องมีผู้เล่นอย่างน้อย 2 คน — เพิ่มชื่อด้านบน</p>
+    <div id="party-diceLose" hidden></div>
+    <button class="btn big" type="button" id="party-diceBtn">ทอย!</button>
+  </section>
+
+  <!-- 🃏 -->
+  <section class="card" id="party-g-cards" hidden>
+    <h2>🃏 สุ่มการ์ด <small id="party-cardsLeft"></small></h2>
+    <div class="chips" id="party-decks"></div>
+    <div class="turn" id="party-cardsTurn"></div>
+    <button class="pcard" type="button" id="party-pcard" aria-label="จั่วการ์ด"></button>
+    <div class="row">
+      <button class="btn big" type="button" id="party-drawBtn">จั่วการ์ด</button>
+      <button class="btn ghost" type="button" id="party-shuffleBtn" title="สับใหม่">🔀</button>
+      <button class="btn ghost" type="button" id="party-cardEditBtn" aria-expanded="false" title="การ์ดของแก๊ง">✏️</button>
+    </div>
+    <div class="edit" id="party-cardEdit" hidden>
+      <span class="muted">เพิ่มการ์ดของแก๊งเอง — ใช้ {p} แทนชื่อคนที่ถูกสุ่ม (หายเมื่อปิดหน้า)</span>
+      <form class="row" id="party-cardForm" autocomplete="off">
+        <input type="text" id="party-cardInput" maxlength="120" placeholder="เช่น {p} ต้องเล่ามุกให้ทุกคนขำ" style="flex:1;min-width:0">
+        <button class="btn" type="submit">เพิ่ม</button>
+      </form>
+      <div class="names" id="party-customList"></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Pawwwpack · ดื่มอย่างรับผิดชอบ เมาไม่ขับ 🚕</span>
+    <span><a href="#split">หารค่าอาหาร</a> · <a href="#countdown">นับถอยหลัง</a></span>
+  </footer>
+</div>
+</section>
+
+<section class="tool" id="t-countdown" hidden>
+<div class="stars" aria-hidden="true"></div>
+<canvas id="countdown-fw" aria-hidden="true"></canvas>
+<div class="wrap">
+  <header>
+    <span class="emoji" aria-hidden="true">🎆</span>
+    <div>
+      <h1>นับถอยหลัง</h1>
+      <p>ปีใหม่ วันสำคัญ หรือจับเวลาเล่นเกม · ไม่บันทึกข้อมูล</p>
+    </div>
+  </header>
+
+  <div class="tabs" role="group" aria-label="แบบนับถอยหลัง">
+    <button type="button" data-mode="newyear">ปีใหม่</button>
+    <button type="button" data-mode="date">เลือกวันเวลา</button>
+    <button type="button" data-mode="timer">จับเวลา</button>
+  </div>
+
+  <div class="panel" id="countdown-p-date" hidden>
+    <label>ชื่อเหตุการณ์<input type="text" id="countdown-dTitle" maxlength="60" placeholder="เช่น ออกเดินทางไปเชียงใหม่"></label>
+    <div class="grid2">
+      <label>วันที่<input type="date" id="countdown-dDate"></label>
+      <label>เวลา<input type="time" id="countdown-dTime" value="00:00"></label>
+    </div>
+  </div>
+
+  <div class="panel" id="countdown-p-timer" hidden>
+    <div class="chips" id="countdown-tPresets"></div>
+    <div class="grid2">
+      <label>นาที<input inputmode="numeric" id="countdown-tMin" value="5" maxlength="4"></label>
+      <label>วินาที<input inputmode="numeric" id="countdown-tSec" value="0" maxlength="2"></label>
+    </div>
+  </div>
+
+  <section class="stage" aria-live="off">
+    <div class="title" id="countdown-title"></div>
+    <div class="target" id="countdown-target"></div>
+    <div class="tiles" id="countdown-tiles" role="timer"></div>
+    <div class="done" id="countdown-done" hidden></div>
+    <div class="actions">
+      <button class="btn" type="button" id="countdown-startBtn" hidden>เริ่ม</button>
+      <button class="btn ghost" type="button" id="countdown-resetBtn" hidden>รีเซ็ต</button>
+      <button class="btn ghost" type="button" id="countdown-fullBtn">⛶ เต็มจอ</button>
+      <button class="btn ghost" type="button" id="countdown-fwBtn">🎆 ดูพลุ</button>
+      <button class="btn ghost" type="button" id="countdown-shareBtn" hidden>คัดลอกลิงก์</button>
+    </div>
+  </section>
+
+  <footer>
+    <span>Pawwwpack · เปิดหน้านี้ค้างไว้ หมดเวลาแล้วมีพลุ 🎇</span>
+    <span><a href="#split">หารค่าอาหาร</a> · <a href="#party">เกมวงเหล้า</a></span>
+  </footer>
+</div>
+<div class="final" id="countdown-final" hidden><p id="countdown-finalLabel"></p><b id="countdown-finalNum"></b></div>
+<div class="cele" id="countdown-cele" hidden role="alert">
+  <div class="cele-in">
+    <p class="cele-top" id="countdown-celeTop"></p>
+    <h2 class="cele-big" id="countdown-celeBig"></h2>
+    <p class="cele-sub" id="countdown-celeSub"></p>
+    <button class="cele-x" type="button" id="countdown-celeClose">ปิด</button>
+  </div>
+</div>
+<div class="toast" id="countdown-toast" role="status"></div>
+</section>
+
+<script>
+// Nothing is saved anywhere: each tool keeps its state in memory while the page is open.
+
+// ═══ 🧾 หารค่าอาหาร ═══
+;(() => {
+const root = document.getElementById('t-split')
+// Everything lives in this array only — nothing is saved anywhere.
+// Money is kept in satang (integers) so the split always adds up exactly.
+let people = []
+let nextId = 1
+
+const $ = id => document.getElementById('split-' + id)
+const baht = s => '฿' + (s / 100).toLocaleString('th-TH', { minimumFractionDigits: s % 100 ? 2 : 0, maximumFractionDigits: 2 })
+
+// "120+85.5" → 20550 satang; null when it isn't a valid sum of non-negative numbers
+function parseAmount(text) {
+  const t = text.replace(/[,\s฿]/g, '')
+  if (!t) return 0
+  if (!/^\d*\.?\d+(\+\d*\.?\d+)*$/.test(t)) return null
+  return t.split('+').reduce((sum, n) => sum + Math.round(parseFloat(n) * 100), 0)
+}
+
+function addPerson(name) {
+  name = name.trim()
+  if (!name) return
+  if (people.some(p => p.name === name)) { toast('มีชื่อ ' + name + ' แล้ว'); return }
+  people.push({ id: nextId++, name, text: '', paid: 0, eats: true })
+  renderPeople()
+  const inputs = root.querySelectorAll('.person input[inputmode]')
+  inputs[inputs.length - 1].focus()
+}
+
+function renderPeople() {
+  const box = $('people')
+  box.innerHTML = ''
+  if (!people.length) box.innerHTML = '<div class="empty">ยังไม่มีใคร — พิมพ์ชื่อแล้วกด เพิ่ม</div>'
+  for (const p of people) {
+    const row = document.createElement('div')
+    row.className = 'person'
+    row.innerHTML = `
+      <span class="name"></span>
+      <input inputmode="decimal" placeholder="จ่ายไป ฿" aria-label="ยอดที่จ่าย">
+      <label class="eat"><input type="checkbox"> กิน</label>
+      <button class="del" type="button" aria-label="ลบ">×</button>`
+    row.querySelector('.name').textContent = p.name
+    const amount = row.querySelector('input[inputmode]')
+    amount.value = p.text
+    amount.addEventListener('input', () => {
+      p.text = amount.value
+      const v = parseAmount(amount.value)
+      amount.classList.toggle('bad', v === null)
+      if (v !== null) p.paid = v
+      calculate()
+    })
+    amount.addEventListener('keydown', e => { if (e.key === 'Enter') $('nameInput').focus() })
+    const eat = row.querySelector('.eat input')
+    eat.checked = p.eats
+    eat.addEventListener('change', () => { p.eats = eat.checked; calculate() })
+    row.querySelector('.del').addEventListener('click', () => { people = people.filter(x => x !== p); renderPeople() })
+    box.append(row)
+  }
+  $('count').textContent = people.length ? people.length + ' คน' : ''
+  calculate()
+}
+
+function calculate() {
+  const eaters = people.filter(p => p.eats)
+  const total = people.reduce((s, p) => s + p.paid, 0)
+  const show = people.length >= 2 && total > 0 && eaters.length > 0
+  $('result').hidden = !show
+  if (!show) return
+
+  // Equal shares; the leftover satang go one each to the first eaters
+  const base = Math.floor(total / eaters.length)
+  let extra = total - base * eaters.length
+  const owes = new Map(people.map(p => [p, 0]))
+  for (const p of eaters) owes.set(p, base + (extra-- > 0 ? 1 : 0))
+
+  const bal = people.map(p => ({ p, v: p.paid - owes.get(p) }))
+
+  // Fewest transfers (greedy): the biggest debtor pays the biggest creditor, repeat
+  const debtors = bal.filter(b => b.v < 0).map(b => ({ name: b.p.name, v: -b.v })).sort((a, b) => b.v - a.v)
+  const creditors = bal.filter(b => b.v > 0).map(b => ({ name: b.p.name, v: b.v })).sort((a, b) => b.v - a.v)
+  const transfers = []
+  let i = 0, j = 0
+  while (i < debtors.length && j < creditors.length) {
+    const amt = Math.min(debtors[i].v, creditors[j].v)
+    transfers.push({ from: debtors[i].name, to: creditors[j].name, amt })
+    if ((debtors[i].v -= amt) === 0) i++
+    if ((creditors[j].v -= amt) === 0) j++
+  }
+
+  $('total').textContent = baht(total)
+  $('eaters').textContent = eaters.length
+  $('share').textContent = baht(base) + (total % eaters.length ? '+' : '')
+
+  const tBox = $('transfers')
+  tBox.innerHTML = transfers.length ? '' : '<div class="done">ทุกคนจ่ายพอดีแล้ว ไม่ต้องโอน 🎉</div>'
+  for (const t of transfers) {
+    const el = document.createElement('div')
+    el.className = 'pay'
+    el.innerHTML = '<span class="who"><span></span> <span class="arrow">→</span> <span></span></span><b></b>'
+    const [from, , to] = el.querySelectorAll('.who span')
+    from.textContent = t.from; to.textContent = t.to
+    el.querySelector('b').textContent = baht(t.amt)
+    tBox.append(el)
+  }
+
+  const rows = $('balances')
+  rows.innerHTML = ''
+  for (const { p, v } of bal) {
+    const r = document.createElement('div')
+    r.className = 'row'
+    r.innerHTML = '<span></span><span></span>'
+    r.firstChild.textContent = `${p.name} · จ่าย ${baht(p.paid)}${p.eats ? '' : ' (ไม่ได้กิน)'}`
+    const s = r.lastChild
+    if (v > 0) { s.className = 'get'; s.textContent = 'ได้คืน ' + baht(v) }
+    else if (v < 0) { s.className = 'owe'; s.textContent = 'ต้องจ่าย ' + baht(-v) }
+    else { s.className = 'even'; s.textContent = 'พอดี' }
+    rows.append(r)
+  }
+
+  calculate.summary = [
+    `🐾 หารค่าอาหาร รวม ${baht(total)} · ${eaters.length} คน ตกคนละ ${baht(base)}`,
+    ...(transfers.length ? transfers.map(t => `• ${t.from} → ${t.to} ${baht(t.amt)}`) : ['• ไม่ต้องโอน จ่ายพอดีแล้ว']),
+  ].join('\n')
+}
+
+let toastT
+function toast(msg) {
+  const t = $('toast')
+  t.textContent = msg; t.classList.add('on')
+  clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('on'), 1600)
+}
+
+$('addForm').addEventListener('submit', e => {
+  e.preventDefault()
+  addPerson($('nameInput').value)
+  $('nameInput').value = ''
+})
+$('copyBtn').addEventListener('click', () => {
+  const text = calculate.summary || ''
+  const ok = () => toast('คัดลอกแล้ว วางในแชตได้เลย')
+  if (navigator.clipboard) navigator.clipboard.writeText(text).then(ok, () => prompt('คัดลอกข้อความนี้', text))
+  else prompt('คัดลอกข้อความนี้', text)
+})
+$('resetBtn').addEventListener('click', () => {
+  if (people.length && !confirm('ล้างรายชื่อและยอดทั้งหมด?')) return
+  people = []
+  renderPeople()
+  $('nameInput').focus()
+})
+
+renderPeople()
+})()
+
+// ═══ 🎉 เกมวงเหล้า ═══
+;(() => {
+const root = document.getElementById('t-party')
+// ── content: [drinking, no-drink]; a plain string works for both (same as the app's partyContent.ts) ──
+const C = {
+  penalty: ['ดื่ม 1 ช็อต 🍺', 'รับภารกิจจากเพื่อน 1 ข้อ 🎯'],
+  wheel: [
+    ['ดื่ม 1 อึก', 'ทำหน้าตลก'], ['ดื่ม 2 อึก', 'เต้น 10 วิ'], ['หมดแก้ว!', 'ร้องเพลง 1 ท่อน'],
+    ['ซ้ายมือดื่ม', 'ซ้ายมือรับกรรม'], ['ขวามือดื่ม', 'ขวามือรับกรรม'], ['ทุกคนดื่ม', 'ทุกคนปรบมือ'],
+    ['ชี้คนดื่ม', 'ชี้คนรับกรรม'], ['รอด! 😎', 'รอด! 😎'],
+  ],
+  dice: {
+    triple: ['ตองเลย! ทุกคนหมดแก้ว 🍻', 'ตองเลย! ทุกคนเต้นพร้อมกัน 💃'],
+    pair:   ['เลขเบิ้ล — ทุกคนดื่ม', 'เลขเบิ้ล — ทุกคนทำท่าตามคนทอย'],
+    seven:  ['รวมได้ 7 — ชี้ใครก็ได้ให้ดื่ม', 'รวมได้ 7 — ชี้ใครก็ได้รับภารกิจ'],
+    one:    ['ออกเลข 1 — คนทอยดื่มเอง', 'ออกเลข 1 — คนทอยรับภารกิจเอง'],
+    six:    ['ได้ 6 — ชี้ใครก็ได้ให้ดื่ม', 'ได้ 6 — ชี้ใครก็ได้รับภารกิจ'],
+    high:   ['รวม 15 ขึ้นไป — ชี้ 2 คนดื่ม', 'รวม 15 ขึ้นไป — ชี้ 2 คนรับภารกิจ'],
+    safe:   'รอด! ส่งต่อคนถัดไป',
+  },
+  decks: {
+    warm: { name: 'อุ่นเครื่อง', cards: [
+      ['ใครมาสายสุดวันนี้ ดื่ม', 'ใครมาสายสุดวันนี้ เล่าเหตุผลแบบเวอร์ๆ'],
+      ['คนที่ใส่เสื้อสีเข้มสุด ดื่ม', 'คนที่ใส่เสื้อสีเข้มสุด ทำท่าโพสต์แฟชั่น'],
+      '{p} เลือกเพลงต่อไปให้วง',
+      ['ใครยังไม่เคยไปทะเลปีนี้ ดื่ม', 'ใครยังไม่เคยไปทะเลปีนี้ ร้องเพลงทะเล 1 ท่อน'],
+      'ทุกคนชนแก้ว แล้วพูดชื่อทริปในฝันพร้อมกัน',
+      ['ห้ามพูดคำว่า "ใช่" 3 ตา ใครพลาดดื่ม', 'ห้ามพูดคำว่า "ใช่" 3 ตา ใครพลาดทำหน้าตลก'],
+      '{p} ต้องพูดลงท้ายด้วย "เมี๊ยว" จนถึงตาต่อไป',
+      ['คนที่มือถือแบตน้อยสุด ดื่ม', 'คนที่มือถือแบตน้อยสุด เต้น 10 วิ'],
+    ] },
+    truth: { name: 'ความจริงหรือท้า', cards: [
+      'ความจริง: ทริปไหนที่อยากลืมที่สุด เพราะอะไร',
+      'ความจริง: ในวงนี้ ใครที่คุณคิดว่าเก็บเงินเก่งสุด',
+      'ท้า: โทรหาคนล่าสุดในประวัติการโทร แล้วร้องเพลงวันเกิดให้',
+      'ความจริง: เคยแอบไม่โอนเงินค่าหารให้เพื่อนไหม',
+      'ท้า: ให้ {p} ตั้งรูปโปรไฟล์ให้คุณ 1 ชั่วโมง',
+      'ความจริง: นิสัยแย่ที่สุดเวลาไปเที่ยวของคุณคืออะไร',
+      'ท้า: เลียนแบบเสียง {p} จนกว่าจะมีคนทายถูก',
+      ['ไม่อยากตอบ ไม่อยากทำ? ดื่ม 2 อึก', 'ไม่อยากตอบ ไม่อยากทำ? โดนเพื่อนแปะสติกเกอร์บนหน้า'],
+    ] },
+    hard: { name: 'หนักๆ', cards: [
+      ['หมดแก้ว! ไม่มีข้อแม้', 'ทำท่าแพลงก์ 20 วิ'],
+      ['{p} กับคุณ ดื่มพร้อมกันแบบคล้องแขน', '{p} กับคุณ เต้นคู่กัน 15 วิ'],
+      ['ทุกคนที่โสด ดื่ม', 'ทุกคนที่โสด ร้องเพลงอกหักพร้อมกัน'],
+      ['คนที่จ่ายเงินน้อยสุดในทริปนี้ ดื่ม 2 อึก', 'คนที่จ่ายเงินน้อยสุดในทริปนี้ ไปเอาน้ำแข็งมาเติม'],
+      ['กติกาใหม่: ใครเรียกชื่อเล่นคนอื่น ดื่ม (จนจบเกม)', 'กติกาใหม่: ใครเรียกชื่อเล่นคนอื่น ทำท่ากระต่าย (จนจบเกม)'],
+      ['เลือก 2 คนดื่มแทนคุณ', 'เลือก 2 คนรับภารกิจแทนคุณ'],
+      ['ซ้ายมือกับขวามือ ดื่ม — คุณรอด', 'ซ้ายมือกับขวามือ ร้องเพลงคู่ — คุณรอด'],
+      ['ยกให้ {p} เป็นราชาวง: สั่งใครดื่มก็ได้ 1 ครั้ง', 'ยกให้ {p} เป็นราชาวง: สั่งภารกิจใครก็ได้ 1 ครั้ง'],
+    ] },
+  },
+}
+
+// ── shared state: in memory only, gone when the page closes ──
+let players = []
+let sober = false
+const $ = id => document.getElementById('party-' + id)
+const rand = n => Math.floor(Math.random() * n)
+const shuffle = a => { const b = [...a]; for (let i = b.length - 1; i > 0; i--) { const j = rand(i + 1); [b[i], b[j]] = [b[j], b[i]] } return b }
+const line = l => typeof l === 'string' ? l : l[sober ? 1 : 0]
+const buzz = p => { try { navigator.vibrate && navigator.vibrate(p) } catch {} }
+const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches
+const who = i => players.length ? players[i % players.length] : ''
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c])
+function turnBadge(el, name) { el.innerHTML = name ? `<span>👉 ตาของ ${esc(name)}</span>` : '' }
+function chips(el, items, current, onPick, cls = '') {
+  el.innerHTML = ''
+  for (const [value, label] of items) {
+    const b = document.createElement('button')
+    b.type = 'button'; b.className = 'chip ' + cls; b.textContent = label
+    b.setAttribute('aria-pressed', Array.isArray(current) ? current.includes(value) : value === current)
+    b.onclick = () => onPick(value)
+    el.append(b)
+  }
+}
+function loserPanel(el, name, extra = '') {
+  el.hidden = false
+  el.innerHTML = `<div class="boom"><span class="e">💥</span><b>${esc(name || 'คนนี้')} แพ้!</b><span>${esc(line(C.penalty))}</span>${extra}</div>`
+}
+const BOOM = [200, 80, 400]
+
+// ── players ──
+function renderNames() {
+  const box = $('names')
+  box.innerHTML = ''
+  players.forEach((n, i) => {
+    const s = document.createElement('span')
+    s.className = 'name'
+    s.innerHTML = `<span></span><button type="button" aria-label="ลบ">×</button>`
+    s.firstChild.textContent = n
+    s.lastChild.onclick = () => { players.splice(i, 1); renderNames(); refresh() }
+    box.append(s)
+  })
+  $('count').textContent = players.length ? players.length + ' คน' : 'ไม่ใส่ชื่อก็เล่นได้'
+}
+$('addForm').onsubmit = e => {
+  e.preventDefault()
+  for (const n of $('nameInput').value.split(',').map(s => s.trim()).filter(Boolean)) {
+    if (!players.includes(n) && players.length < 16) players.push(n)
+  }
+  $('nameInput').value = ''
+  renderNames(); refresh()
+}
+$('sober').onchange = e => { sober = e.target.checked; refresh() }
+
+// ── game switcher ──
+let game = null
+root.querySelectorAll('.game').forEach(b => b.onclick = () => {
+  game = b.dataset.game
+  root.querySelectorAll('.game').forEach(x => x.setAttribute('aria-pressed', x === b))
+  for (const g of ['bomb', 'wheel', 'dice', 'cards']) $('g-' + g).hidden = g !== game
+  refresh()
+  $('g-' + game).scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth', block: 'start' })
+})
+function refresh() {
+  if (game === 'bomb') bomb.render()
+  if (game === 'wheel') wheel.render()
+  if (game === 'dice') dice.reset()
+  if (game === 'cards') cards.render()
+}
+
+// ── 💣 number bomb ──
+const bomb = {
+  max: 100, secret: 0, lo: 1, hi: 100, turn: 0, hist: [], loser: null,
+  reset(m = this.max) { Object.assign(this, { max: m, secret: 1 + rand(m), lo: 1, hi: m, turn: 0, hist: [], loser: null }); $('bombWarn').textContent = ''; this.render() },
+  render() {
+    chips($('bombMax'), [50, 100, 500].map(m => [m, '1–' + m]), this.max, m => this.reset(m))
+    const lost = this.loser !== null
+    $('bombPlay').hidden = lost
+    $('bombLose').hidden = !lost
+    $('bombReset').textContent = lost ? 'เล่นใหม่' : 'เริ่มใหม่'
+    if (lost) loserPanel($('bombLose'), this.loser, `<span style="opacity:.85;font-size:14px">เลขระเบิดคือ ${this.secret}</span>`)
+    turnBadge($('bombTurn'), who(this.turn))
+    $('bombRange').textContent = `${this.lo} – ${this.hi}`
+    $('bombBar').style.cssText = `margin-left:${(this.lo - 1) / this.max * 100}%;width:${(this.hi - this.lo + 1) / this.max * 100}%`
+    $('bombLeft').textContent = `เหลือ ${this.hi - this.lo + 1} เลข`
+    $('bombGuess').placeholder = `${this.lo}–${this.hi}`
+    $('bombHist').innerHTML = lost ? '' : this.hist.map(h => `<span>${esc(h.who)} <b>${h.n}</b> ${h.up ? '⬆️' : '⬇️'}</span>`).join('')
+  },
+  guess(n) {
+    if (this.loser !== null) return
+    if (!Number.isInteger(n) || n < this.lo || n > this.hi) { $('bombWarn').textContent = `ต้องอยู่ระหว่าง ${this.lo}–${this.hi}`; return }
+    $('bombWarn').textContent = ''
+    const me = who(this.turn)
+    if (n === this.secret) { this.loser = me; buzz(BOOM); return this.render() }
+    if (n < this.secret) this.lo = n + 1; else this.hi = n - 1
+    this.hist = [{ who: me, n, up: n < this.secret }, ...this.hist].slice(0, 6)
+    buzz(30)
+    // one number left: the next player is stuck with the bomb
+    if (this.lo === this.hi) { this.loser = who(this.turn + 1); buzz(BOOM); return this.render() }
+    this.turn++
+    this.render()
+  },
+}
+$('bombForm').onsubmit = e => { e.preventDefault(); const v = $('bombGuess').value.trim(); bomb.guess(v === '' ? NaN : Number(v)); $('bombGuess').value = ''; $('bombGuess').focus() }
+$('bombReset').onclick = () => bomb.reset()
+bomb.reset()
+
+// ── 🎡 party wheel ──
+const COLORS = ['#9E4436', '#F9C08A', '#D4674A', '#FFE0C0', '#7C342A', '#EF9A5E', '#5E261E', '#E6D3B3', '#B8956A', '#FFF3E6', '#8F6B47', '#F3EADB']
+const wheel = {
+  custom: null, rot: 0, spinning: false, result: null, turn: 0,
+  slices() { return this.custom || C.wheel.map(line) },
+  draw() {
+    const s = this.slices(), seg = 360 / s.length
+    const pt = a => [Math.sin(a * Math.PI / 180) * 96, -Math.cos(a * Math.PI / 180) * 96]
+    let svg = ''
+    s.forEach((label, i) => {
+      const [x1, y1] = pt(i * seg), [x2, y2] = pt((i + 1) * seg)
+      const fill = COLORS[i % COLORS.length]
+      const dark = ['#9E4436', '#D4674A', '#7C342A', '#5E261E', '#8F6B47', '#B8956A'].includes(fill)
+      const text = label.length > 12 ? label.slice(0, 11) + '…' : label
+      svg += `<path d="M0 0 L${x1.toFixed(2)} ${y1.toFixed(2)} A96 96 0 ${seg > 180 ? 1 : 0} 1 ${x2.toFixed(2)} ${y2.toFixed(2)} Z" fill="${fill}" stroke="#fff" stroke-width="1.5"/>`
+      const mid = (i + 0.5) * seg
+      // labels read from the hub outward on the right half and inward on the left, so none is upside-down
+      svg += `<text transform="rotate(${mid}) translate(0 -58) rotate(${mid > 180 ? 90 : -90})" text-anchor="middle" dominant-baseline="middle" font-family="Mitr, sans-serif" font-size="${s.length > 8 ? 8 : 9.5}" fill="${dark ? '#FFF3E6' : '#3F2E25'}">${esc(text)}</text>`
+    })
+    svg += '<circle r="14" fill="#3F2E25"/><circle r="6" fill="#FBF8F3"/>'
+    $('wheel').innerHTML = svg
+  },
+  render() {
+    this.draw()
+    turnBadge($('wheelTurn'), who(this.turn))
+    $('wheelSpin').textContent = this.result !== null && players.length ? 'ตาคนถัดไป →' : 'หมุนเลย!'
+    if (this.result === null && !this.spinning) $('wheelResult').innerHTML = '<span class="muted">กดหมุนเลย!</span>'
+  },
+  spin() {
+    const s = this.slices()
+    if (this.spinning || s.length < 2) return
+    if (this.result !== null && players.length) { this.turn++; this.result = null; return this.render() }
+    const idx = rand(s.length), seg = 360 / s.length
+    const mid = (idx + 0.5) * seg + (Math.random() - 0.5) * seg * 0.7
+    this.rot = this.rot - (this.rot % 360) + 360 * 5 + (360 - mid)
+    const ms = reduced() ? 0 : 3600
+    const svg = $('wheel')
+    svg.style.transitionDuration = ms + 'ms'
+    svg.style.transform = `rotate(${this.rot}deg)`
+    this.spinning = true; this.result = null
+    $('wheelSpin').disabled = true
+    $('wheelResult').innerHTML = '<span class="muted">กำลังหมุน…</span>'
+    setTimeout(() => {
+      this.spinning = false; this.result = s[idx]
+      $('wheelSpin').disabled = false
+      const name = who(this.turn)
+      $('wheelResult').innerHTML = `<div class="pop">${name ? `<div class="muted">${esc(name)}</div>` : ''}<b>${esc(this.result)}</b></div>`
+      buzz(60)
+      this.render()
+    }, ms + 50)
+  },
+}
+$('wheelSpin').onclick = () => wheel.spin()
+$('wheelEditBtn').onclick = () => {
+  const box = $('wheelEdit'), open = box.hidden
+  box.hidden = !open; $('wheelEditBtn').setAttribute('aria-expanded', open)
+  if (open) $('wheelText').value = wheel.slices().join('\n')
+}
+$('wheelText').oninput = () => {
+  const v = $('wheelText').value.split('\n').map(s => s.trim()).filter(Boolean).slice(0, 12)
+  if (v.length >= 2) { wheel.custom = v; wheel.result = null; wheel.render() }
+}
+$('wheelDefault').onclick = () => { wheel.custom = null; wheel.result = null; $('wheelText').value = wheel.slices().join('\n'); wheel.render() }
+
+// ── 🎲 dice ──
+const PIPS = { 1: [[50, 50]], 2: [[28, 28], [72, 72]], 3: [[28, 28], [50, 50], [72, 72]], 4: [[28, 28], [72, 28], [28, 72], [72, 72]], 5: [[28, 28], [72, 28], [50, 50], [28, 72], [72, 72]], 6: [[28, 25], [72, 25], [28, 50], [72, 50], [28, 75], [72, 75]] }
+const dieSvg = v => `<svg viewBox="0 0 100 100" aria-label="${v}"><rect x="4" y="4" width="92" height="92" rx="20" fill="#fff" stroke="#3F2E25" stroke-width="5"/>${PIPS[v].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="9" fill="${v === 1 ? '#9E4436' : '#3F2E25'}"/>`).join('')}</svg>`
+function verdict(v) {
+  const d = C.dice, pick = p => p[sober ? 1 : 0]
+  const sum = v.reduce((a, b) => a + b, 0), same = new Set(v).size
+  if (v.length === 1) return v[0] === 6 ? pick(d.six) : v[0] === 1 ? pick(d.one) : d.safe
+  if (v.length === 3 && same === 1) return pick(d.triple)
+  if (same < v.length) return pick(d.pair)
+  if (v.length === 2 && sum === 7) return pick(d.seven)
+  if (v.length === 3 && sum >= 15) return pick(d.high)
+  if (v.includes(1)) return pick(d.one)
+  return d.safe
+}
+const dice = {
+  count: 2, mode: 'rules', values: [6, 6], rolling: false, rolled: false, turn: 0,
+  contenders: [], scores: {}, round: 1, loser: null,
+  reset() {
+    Object.assign(this, { rolled: false, turn: 0, contenders: players.map((_, i) => i), scores: {}, round: 1, loser: null })
+    this.values = Array.from({ length: this.count }, (_, i) => this.values[i] || 6)
+    this.render()
+  },
+  render() {
+    chips($('diceOpts'), [['rules', 'ทอยตามกติกา'], ['race', 'ทอยแข่ง']], this.mode, m => { this.mode = m; this.reset() })
+    const nums = document.createElement('span')
+    chips(nums, [1, 2, 3].map(n => [n, String(n)]), this.count, n => { if (!this.rolling) { this.count = n; this.reset() } }, 'num')
+    $('diceOpts').append(...nums.children)
+    $('diceSub').textContent = this.mode === 'rules' ? 'ทอยแล้วทำตามกติกา' : 'แต้มรวมต่ำสุดแพ้ เสมอทอยใหม่'
+    const needMore = this.mode === 'race' && players.length < 2
+    $('diceNeed').hidden = !needMore
+    $('dicePlay').hidden = needMore || this.loser !== null
+    $('diceLose').hidden = this.loser === null
+    if (this.loser !== null) loserPanel($('diceLose'), this.loser)
+    $('diceBtn').hidden = needMore
+    $('diceBtn').disabled = this.rolling
+    $('diceBtn').textContent = this.loser !== null ? 'เล่นใหม่' : this.mode === 'rules' && this.rolled && players.length ? 'ตาคนถัดไป →' : 'ทอย!'
+    const name = this.mode === 'race' ? players[this.contenders[this.turn]] || '' : who(this.turn)
+    turnBadge($('diceTurn'), name)
+    $('diceRound').hidden = !(this.mode === 'race' && this.round > 1)
+    $('diceRound').textContent = `เสมอ! ทอยใหม่รอบที่ ${this.round}`
+    $('dice').innerHTML = this.values.map(dieSvg).join('')
+    $('dice').classList.toggle('rolling', this.rolling)
+    const total = this.values.reduce((a, b) => a + b, 0)
+    $('diceResult').innerHTML = this.rolled ? `<div class="pop"><div class="muted">รวม ${total}</div>${this.mode === 'rules' ? `<b>${esc(verdict(this.values))}</b>` : ''}</div>` : ''
+    $('diceScores').innerHTML = this.mode === 'race' ? this.contenders.filter(i => this.scores[i] !== undefined).map(i => `<span>${esc(players[i])} <b>${this.scores[i]}</b></span>`).join('') : ''
+  },
+  press() {
+    if (this.loser !== null) return this.reset()
+    if (this.mode === 'rules' && this.rolled && players.length) { this.turn++; this.rolled = false; return this.render() }
+    this.roll()
+  },
+  roll() {
+    if (this.rolling || this.loser !== null || (this.mode === 'race' && players.length < 2)) return
+    const end = Array.from({ length: this.count }, () => 1 + rand(6))
+    this.rolling = true; this.rolled = false
+    let ticks = reduced() ? 0 : 9
+    const tick = () => {
+      if (ticks-- > 0) { this.values = end.map(() => 1 + rand(6)); this.render(); return setTimeout(tick, 70) }
+      this.values = end; this.rolling = false; this.rolled = true; buzz(50)
+      this.render()
+      if (this.mode === 'race') this.settle(end.reduce((a, b) => a + b, 0))
+    }
+    tick()
+  },
+  settle(total) {
+    const me = this.contenders[this.turn]
+    this.scores[me] = total
+    this.render()
+    if (this.turn + 1 < this.contenders.length) return setTimeout(() => { this.turn++; this.rolled = false; this.render() }, 900)
+    // everyone in this round has rolled: lowest loses, ties roll again
+    const low = Math.min(...this.contenders.map(i => this.scores[i]))
+    const tied = this.contenders.filter(i => this.scores[i] === low)
+    if (tied.length === 1) return setTimeout(() => { this.loser = players[tied[0]]; buzz(BOOM); this.render() }, 700)
+    setTimeout(() => { Object.assign(this, { contenders: tied, scores: {}, turn: 0, rolled: false }); this.round++; this.render() }, 1400)
+  },
+}
+$('dice').onclick = () => dice.roll()
+$('diceBtn').onclick = () => dice.press()
+
+// ── 🃏 cards ──
+const DECK_NAMES = { warm: C.decks.warm.name, truth: C.decks.truth.name, hard: C.decks.hard.name, custom: 'การ์ดของแก๊ง' }
+const cards = {
+  chosen: ['warm', 'truth'], custom: [], pile: [], card: null, turn: 0,
+  build() {
+    this.pile = shuffle([
+      ...this.chosen.filter(k => k !== 'custom').flatMap(k => C.decks[k].cards.map(l => ({ deck: k, line: l }))),
+      ...(this.chosen.includes('custom') ? this.custom.map(l => ({ deck: 'custom', line: l })) : []),
+    ])
+  },
+  render() {
+    const keys = ['warm', 'truth', 'hard', ...(this.custom.length ? ['custom'] : [])]
+    chips($('decks'), keys.map(k => [k, DECK_NAMES[k] + (k === 'custom' ? ` (${this.custom.length})` : '')]), this.chosen, k => {
+      this.chosen = this.chosen.includes(k) ? (this.chosen.length > 1 ? this.chosen.filter(x => x !== k) : this.chosen) : [...this.chosen, k]
+      this.build(); this.card = null; this.render()
+    })
+    turnBadge($('cardsTurn'), this.card ? who(this.turn) : '')
+    $('pcard').innerHTML = this.card
+      ? `<div class="d-${this.card.deck} flip"><small>${esc(DECK_NAMES[this.card.deck])}</small><p></p><span style="font-size:26px">🐾</span></div>`
+      : '<div class="back"><span style="font-size:52px">🃏</span><p>แตะเพื่อจั่วการ์ด</p></div>'
+    if (this.card) $('pcard').querySelector('p').textContent = this.card.text
+    $('cardsLeft').textContent = `เหลือ ${this.pile.length} ใบ`
+    $('drawBtn').textContent = this.card ? (players.length ? 'ตาคนถัดไป →' : 'จั่วใบต่อไป') : 'จั่วการ์ด'
+    $('customList').innerHTML = ''
+    this.custom.forEach((c, i) => {
+      const s = document.createElement('span')
+      s.className = 'name'
+      s.innerHTML = '<span></span><button type="button" aria-label="ลบ">×</button>'
+      s.firstChild.textContent = c
+      s.lastChild.onclick = () => { this.custom.splice(i, 1); if (!this.custom.length) this.chosen = this.chosen.filter(k => k !== 'custom'); if (!this.chosen.length) this.chosen = ['warm']; this.build(); this.render() }
+      $('customList').append(s)
+    })
+  },
+  draw() {
+    if (!this.pile.length) this.build()
+    if (!this.pile.length) return
+    if (this.card) this.turn++
+    const c = this.pile.shift()
+    const me = who(this.turn)
+    const others = players.filter(p => p !== me)
+    const target = others.length ? others[rand(others.length)] : 'คนข้างๆ'
+    this.card = { deck: c.deck, text: line(c.line).split('{p}').join(target) }
+    buzz(25)
+    this.render()
+  },
+}
+$('pcard').onclick = $('drawBtn').onclick = () => cards.draw()
+$('shuffleBtn').onclick = () => { cards.build(); cards.card = null; cards.turn = 0; cards.render() }
+$('cardEditBtn').onclick = () => { const open = $('cardEdit').hidden; $('cardEdit').hidden = !open; $('cardEditBtn').setAttribute('aria-expanded', open) }
+$('cardForm').onsubmit = e => {
+  e.preventDefault()
+  const v = $('cardInput').value.trim()
+  if (!v) return
+  cards.custom = [...cards.custom, v].slice(-50)
+  $('cardInput').value = ''
+  if (cards.chosen.includes('custom')) { const i = rand(cards.pile.length + 1); cards.pile.splice(i, 0, { deck: 'custom', line: v }) }
+  else { cards.chosen.push('custom'); cards.build() }
+  cards.render()
+}
+cards.build()
+
+renderNames()
+})()
+
+// ═══ 🎆 นับถอยหลัง ═══
+;(() => {
+const root = document.getElementById('t-countdown')
+// Nothing is saved: the settings live in memory, or in the link you copy (?to=…&t=…).
+const $ = id => document.getElementById('countdown-' + id)
+const pad = n => String(n).padStart(2, '0')
+const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches
+const thDate = d => d.toLocaleString('th-TH', { dateStyle: 'full', timeStyle: 'short' })
+
+let mode = 'newyear'
+let target = null          // epoch ms the countdown ends (newyear/date, or a running timer)
+let timerLeft = 300000     // ms left on a paused timer
+let running = false        // timer mode only
+let finished = false
+let lastFinal = null
+
+function nextNewYear() { const y = new Date().getFullYear() + 1; return { at: new Date(y, 0, 1).getTime(), year: y } }
+
+function setMode(m) {
+  mode = m
+  root.querySelectorAll('.tabs button').forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === m))
+  $('p-date').hidden = m !== 'date'
+  $('p-timer').hidden = m !== 'timer'
+  $('startBtn').hidden = $('resetBtn').hidden = m !== 'timer'
+  $('shareBtn').hidden = m !== 'date'
+  running = false; finished = false; stopFireworks()
+  if (m === 'newyear') target = nextNewYear().at
+  if (m === 'date') readDate()
+  if (m === 'timer') { readTimer(); target = null }
+  tick()
+}
+root.querySelectorAll('.tabs button').forEach(b => b.onclick = () => setMode(b.dataset.mode))
+
+// ── date mode ──
+function readDate() {
+  const d = $('dDate').value, t = $('dTime').value || '00:00'
+  target = d ? new Date(`${d}T${t}`).getTime() : null
+  finished = false; stopFireworks()
+}
+$('dDate').oninput = $('dTime').oninput = () => { readDate(); tick() }
+$('dTitle').oninput = () => tick()
+
+// ── timer mode ──
+const PRESETS = [[1, '1 นาที'], [3, '3 นาที'], [5, '5 นาที'], [10, '10 นาที'], [30, '30 นาที']]
+function renderPresets() {
+  const box = $('tPresets'); box.innerHTML = ''
+  for (const [m, label] of PRESETS) {
+    const b = document.createElement('button')
+    b.type = 'button'; b.className = 'chip'; b.textContent = label
+    b.setAttribute('aria-pressed', !running && timerLeft === m * 60000)
+    b.onclick = () => { $('tMin').value = m; $('tSec').value = 0; readTimer(); tick() }
+    box.append(b)
+  }
+}
+function readTimer() {
+  const m = Math.min(9999, parseInt($('tMin').value, 10) || 0)
+  const s = Math.min(59, parseInt($('tSec').value, 10) || 0)
+  running = false; target = null; finished = false; stopFireworks()
+  timerLeft = (m * 60 + s) * 1000
+}
+$('tMin').oninput = $('tSec').oninput = () => { readTimer(); tick() }
+$('startBtn').onclick = () => {
+  if (finished || timerLeft <= 0) { readTimer() }
+  if (running) { timerLeft = Math.max(0, target - Date.now()); running = false; target = null }
+  else if (timerLeft > 0) { target = Date.now() + timerLeft; running = true; unlockAudio() }
+  tick()
+}
+$('resetBtn').onclick = () => { readTimer(); tick() }
+
+// ── render every second (and a bit faster near the end) ──
+function tick() {
+  const now = Date.now()
+  let left, title, sub = ''
+  if (mode === 'newyear') {
+    const ny = nextNewYear()
+    if (!finished) target = ny.at
+    title = finished ? '' : `🎆 นับถอยหลังสู่ปี ${ny.year}`
+    sub = `เที่ยงคืน 1 มกราคม ${ny.year}`
+    left = target - now
+  } else if (mode === 'date') {
+    title = $('dTitle').value.trim() || 'นับถอยหลัง'
+    if (!target) { left = null; sub = 'เลือกวันที่ด้านบน' }
+    else { left = target - now; sub = thDate(new Date(target)) }
+  } else {
+    title = running ? '⏱️ กำลังจับเวลา' : finished ? '' : '⏱️ จับเวลา'
+    left = running ? target - now : timerLeft
+    sub = running ? 'กด หยุด เพื่อพักเวลา' : ''
+  }
+
+  if (left !== null && left <= 0 && (mode !== 'timer' || running)) finish()
+
+  $('title').textContent = finished ? '' : title
+  $('target').textContent = finished ? '' : sub
+  $('done').hidden = !finished
+  $('tiles').hidden = finished
+  $('startBtn').textContent = running ? 'หยุด' : finished ? 'เริ่มใหม่' : 'เริ่ม'
+
+  // round up to whole seconds so "00:01" shows until the very last moment
+  const total = Math.ceil(Math.max(0, left ?? 0) / 1000)
+  const d = Math.floor(total / 86400)
+  const parts = mode === 'timer' || d === 0
+    ? [[Math.floor(total / 3600), 'ชั่วโมง'], [Math.floor(total % 3600 / 60), 'นาที'], [total % 60, 'วินาที']]
+    : [[d, 'วัน'], [Math.floor(total % 86400 / 3600), 'ชั่วโมง'], [Math.floor(total % 3600 / 60), 'นาที'], [total % 60, 'วินาที']]
+  $('tiles').className = 'tiles' + (parts.length === 3 ? ' three' : '')
+  $('tiles').innerHTML = left === null ? '' : parts.map(([n, label]) => `<div class="tile"><b>${pad(n)}</b><span>${label}</span></div>`).join('')
+
+  // last ten seconds: giant numbers
+  const live = left !== null && left > 0 && left <= 10000 && (mode !== 'timer' || running)
+  $('final').hidden = !live
+  if (live) {
+    const n = Math.ceil(left / 1000)
+    if (n !== lastFinal) {
+      lastFinal = n
+      $('finalLabel').textContent = mode === 'newyear' ? `อีกนิดเดียวสู่ปี ${nextNewYear().year}` : title
+      const b = $('finalNum'); b.textContent = n; b.style.animation = 'none'; b.offsetWidth; b.style.animation = ''
+      beep(n <= 3 ? 880 : 660, 0.08)
+    }
+  } else lastFinal = null
+
+  if (mode === 'timer') renderPresets()
+}
+
+function finish() {
+  if (finished) return
+  finished = true; running = false; timerLeft = 0
+  const year = new Date(target).getFullYear()
+  $('done').textContent = mode === 'newyear' ? `🎉 สวัสดีปีใหม่ ${year}!` : mode === 'date' ? `🎉 ${$('dTitle').value.trim() || 'ถึงเวลาแล้ว'}!` : '⏰ หมดเวลา!'
+  try { navigator.vibrate && navigator.vibrate([300, 120, 300, 120, 600]) } catch {}
+  beep(1046, 0.5)
+  celebrate(year)
+}
+
+// ── the finale: big words over the whole screen + fireworks ──
+function celebrateText(year) {
+  if (mode === 'newyear') return { top: '🎉 สวัสดีปีใหม่ 🎉', big: String(year), sub: 'HAPPY NEW YEAR', text: false }
+  if (mode === 'date') return { top: '🎉 ถึงแล้ว! 🎉', big: $('dTitle').value.trim() || 'ถึงเวลาแล้ว', sub: target ? thDate(new Date(target)) : '', text: true }
+  return { top: '⏰', big: 'หมดเวลา!', sub: 'TIME’S UP', text: true }
+}
+// letters pop in one by one: an <i> per grapheme (Thai vowels and tone marks stay on their letter),
+// grouped in a nowrap <span class="w"> per word so a line only breaks between words
+function letters(el, text) {
+  el.textContent = ''
+  const seg = (s, granularity) => typeof Intl !== 'undefined' && Intl.Segmenter
+    ? [...new Intl.Segmenter('th', { granularity }).segment(s)].map(x => x.segment)
+    : [s]
+  let n = 0
+  for (const word of seg(text, 'word')) {
+    if (!word.trim()) { el.append(' '); continue }
+    const w = document.createElement('span')
+    w.className = 'w'
+    for (const g of seg(word, 'grapheme')) {
+      const i = document.createElement('i')
+      i.textContent = g
+      i.style.animationDelay = (0.25 + n * 0.07) + 's, ' + (n * 0.12) + 's'
+      n++
+      w.append(i)
+    }
+    el.append(w)
+  }
+}
+// the preview button (before the countdown ends) shows the year that's coming
+function celebrate(year = nextNewYear().year) {
+  const c = celebrateText(year)
+  $('celeTop').textContent = c.top
+  $('celeBig').className = 'cele-big' + (c.text ? ' text' : '')
+  letters($('celeBig'), c.big)
+  $('celeSub').textContent = c.sub
+  $('cele').hidden = false
+  root.classList.add('celebrating')
+  startFireworks()
+}
+function endCelebration() { stopFireworks() }
+$('celeClose').onclick = endCelebration
+$('fwBtn').onclick = () => { unlockAudio(); celebrate() }
+addEventListener('keydown', e => { if (e.key === 'Escape' && !$('cele').hidden) endCelebration() })
+
+// ── sound (Web Audio; needs one tap first on phones) ──
+let audio
+function unlockAudio() { try { audio = audio || new (window.AudioContext || window.webkitAudioContext)(); audio.resume() } catch {} }
+document.addEventListener('pointerdown', unlockAudio, { once: true })
+function beep(freq, dur) {
+  if (!audio || audio.state !== 'running') return
+  const o = audio.createOscillator(), g = audio.createGain()
+  o.frequency.value = freq; o.type = 'triangle'
+  g.gain.setValueAtTime(0.18, audio.currentTime)
+  g.gain.exponentialRampToValueAtTime(0.001, audio.currentTime + dur)
+  o.connect(g).connect(audio.destination); o.start(); o.stop(audio.currentTime + dur)
+}
+// a soft "boom" for each burst: filtered noise
+let noise
+function boom(big) {
+  if (!audio || audio.state !== 'running') return
+  if (!noise) {
+    noise = audio.createBuffer(1, audio.sampleRate * 0.6, audio.sampleRate)
+    const d = noise.getChannelData(0)
+    for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / d.length, 2.5)
+  }
+  const src = audio.createBufferSource(), f = audio.createBiquadFilter(), g = audio.createGain()
+  src.buffer = noise; f.type = 'lowpass'; f.frequency.value = big ? 700 : 1400
+  g.gain.value = big ? 0.22 : 0.1
+  src.connect(f).connect(g).connect(audio.destination); src.start()
+}
+
+// ── fireworks: rockets rise from the bottom and burst in different shapes ──
+const cv = $('fw'), ctx = cv.getContext('2d')
+let W = 0, H = 0, DPR = 1, U = 1, CAP = 2000
+function size() {
+  DPR = Math.min(2, devicePixelRatio || 1)
+  W = cv.width = Math.round(innerWidth * DPR); H = cv.height = Math.round(innerHeight * DPR)
+  U = Math.min(W, H) / 100   // 1% of the short side, so bursts fit phones and big screens alike
+  CAP = Math.round(Math.min(4000, Math.max(1200, innerWidth * innerHeight / 450)))
+}
+addEventListener('resize', size); size()
+
+const PALETTE = [['#FFD54A', '#FFF3B0'], ['#FF5C8A', '#FFC2D4'], ['#5CD6FF', '#D4F6FF'], ['#8CFF6B', '#E2FFD6'], ['#C38BFF', '#EEDCFF'], ['#FF9F43', '#FFE0BF'], ['#FFFFFF', '#FFE9A8']]
+const pick = a => a[Math.floor(Math.random() * a.length)]
+const rnd = (a, b) => a + Math.random() * (b - a)
+let rockets = [], sparks = [], flashes = []
+let fwOn = false, fwUntil = 0, raf = 0, nextLaunch = 0, finaleAt = 0
+
+function launch() {
+  const x = rnd(0.12, 0.88) * W, ty = rnd(0.12, 0.42) * H, g = 0.06 * U
+  rockets.push({ x, y: H + 10, px: x, py: H + 10, vx: rnd(-0.15, 0.15) * U, vy: -Math.sqrt(2 * g * (H - ty)), g, ty })
+}
+function spark(x, y, vx, vy, o) {
+  if (sparks.length >= CAP) return
+  sparks.push({ x, y, px: x, py: y, vx, vy, life: 1, decay: o.decay ?? rnd(0.010, 0.016), drag: o.drag ?? 0.965, g: o.g ?? 0.035 * U,
+    color: o.color, w: o.w ?? 0.32 * U, crackle: !!o.crackle, flicker: !!o.flicker })
+}
+function explode(x, y) {
+  const [c1, c2] = pick(PALETTE)
+  const R = rnd(14, 22) * U          // how far the burst spreads
+  const v = R * (1 - 0.965)          // start speed that travels about R with this drag
+  const type = pick(['peony', 'peony', 'ring', 'willow', 'palm', 'crackle', 'double', 'heart'])
+  flashes.push({ x, y, r: R * 0.9, a: 0.35 })
+  boom(type === 'willow' || type === 'palm')
+  if (type === 'ring') {
+    const n = 70, tilt = rnd(0, Math.PI), squash = rnd(0.35, 1)
+    for (let i = 0; i < n; i++) {
+      const a = i / n * Math.PI * 2, ex = Math.cos(a) * v, ey = Math.sin(a) * v * squash
+      spark(x, y, ex * Math.cos(tilt) - ey * Math.sin(tilt), ex * Math.sin(tilt) + ey * Math.cos(tilt), { color: c1, g: 0.02 * U })
+    }
+  } else if (type === 'willow') {
+    for (let i = 0; i < 110; i++) {
+      const a = rnd(0, Math.PI * 2), s = v * rnd(0.5, 1)
+      spark(x, y, Math.cos(a) * s, Math.sin(a) * s, { color: '#FFC861', decay: rnd(0.005, 0.008), drag: 0.975, g: 0.025 * U, w: 0.26 * U, flicker: true })
+    }
+  } else if (type === 'palm') {
+    const n = 14
+    for (let i = 0; i < n; i++) {
+      const a = i / n * Math.PI * 2 + rnd(-0.08, 0.08)
+      spark(x, y, Math.cos(a) * v * 1.1, Math.sin(a) * v * 1.1, { color: c1, decay: 0.008, w: 0.6 * U, g: 0.03 * U })
+    }
+    for (let i = 0; i < 40; i++) { const a = rnd(0, Math.PI * 2), s = v * rnd(0.2, 0.6); spark(x, y, Math.cos(a) * s, Math.sin(a) * s, { color: c2 }) }
+  } else if (type === 'heart') {
+    const n = 80, s = v / 16
+    for (let i = 0; i < n; i++) {
+      const t = i / n * Math.PI * 2
+      spark(x, y, s * 16 * Math.pow(Math.sin(t), 3), -s * (13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t)), { color: '#FF5C8A', g: 0.012 * U, decay: 0.009 })
+    }
+  } else {
+    const n = type === 'crackle' ? 90 : 120
+    for (let i = 0; i < n; i++) {
+      const a = rnd(0, Math.PI * 2), s = v * Math.cbrt(rnd(0.15, 1))
+      spark(x, y, Math.cos(a) * s, Math.sin(a) * s, { color: type === 'double' && i % 2 ? c2 : c1, crackle: type === 'crackle' })
+    }
+    if (type === 'double') for (let i = 0; i < 50; i++) { const a = rnd(0, Math.PI * 2), s = v * 0.45; spark(x, y, Math.cos(a) * s, Math.sin(a) * s, { color: '#FFFFFF', decay: 0.02 }) }
+  }
+}
+
+function frame(t) {
+  // fade the last frame instead of clearing it: that is what draws the trails
+  ctx.globalCompositeOperation = 'destination-out'
+  ctx.fillStyle = 'rgba(0,0,0,.2)'; ctx.fillRect(0, 0, W, H)
+  ctx.globalCompositeOperation = 'lighter'
+
+  if (fwOn && t < fwUntil && t > nextLaunch) {
+    const wide = innerWidth > 900, finale = t > finaleAt
+    const count = finale ? (wide ? 3 : 2) : Math.random() < (wide ? 0.55 : 0.3) ? 2 : 1
+    for (let i = 0; i < count; i++) launch()
+    nextLaunch = t + (finale ? rnd(160, 300) : rnd(450, 950))
+  }
+
+  for (const f of flashes) {
+    const g = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r)
+    g.addColorStop(0, 'rgba(255,240,200,' + f.a + ')'); g.addColorStop(1, 'rgba(255,240,200,0)')
+    ctx.fillStyle = g; ctx.fillRect(f.x - f.r, f.y - f.r, f.r * 2, f.r * 2)
+    f.a *= 0.75
+  }
+  flashes = flashes.filter(f => f.a > 0.02)
+
+  ctx.lineCap = 'round'
+  for (const r of rockets) {
+    r.px = r.x; r.py = r.y
+    r.x += r.vx; r.y += r.vy; r.vy += r.g
+    ctx.strokeStyle = '#FFE9B0'; ctx.lineWidth = 0.45 * U; ctx.globalAlpha = 1
+    ctx.beginPath(); ctx.moveTo(r.px, r.py); ctx.lineTo(r.x, r.y); ctx.stroke()
+    if (Math.random() < 0.7) spark(r.x, r.y, rnd(-0.08, 0.08) * U, rnd(0.05, 0.2) * U, { color: '#FFB866', decay: 0.05, w: 0.22 * U, g: 0.01 * U })
+    if (r.vy >= -0.4 * U || r.y <= r.ty) { r.done = true; explode(r.x, r.y) }
+  }
+  rockets = rockets.filter(r => !r.done)
+
+  for (const s of sparks) {
+    s.px = s.x; s.py = s.y
+    s.vx *= s.drag; s.vy = s.vy * s.drag + s.g
+    s.x += s.vx; s.y += s.vy; s.life -= s.decay
+    if (s.crackle && s.life < 0.45 && Math.random() < 0.08) {
+      s.life = 0
+      for (let i = 0; i < 4; i++) spark(s.x, s.y, rnd(-1, 1) * 0.15 * U, rnd(-1, 1) * 0.15 * U, { color: '#FFFFFF', decay: 0.08, w: 0.18 * U, g: 0 })
+    }
+    const a = s.flicker ? s.life * rnd(0.5, 1) : s.life
+    ctx.globalAlpha = Math.max(0, Math.min(1, a * 1.3))
+    ctx.strokeStyle = s.color; ctx.lineWidth = s.w * (0.5 + s.life * 0.5)
+    ctx.beginPath(); ctx.moveTo(s.px, s.py); ctx.lineTo(s.x, s.y); ctx.stroke()
+  }
+  sparks = sparks.filter(s => s.life > 0 && s.y < H + 40)
+  ctx.globalAlpha = 1
+
+  if (fwOn && t > fwUntil) fwOn = false
+  if (fwOn || rockets.length || sparks.length) raf = requestAnimationFrame(frame)
+  else ctx.clearRect(0, 0, W, H)
+}
+function startFireworks(ms = 30000) {
+  if (reduced()) return
+  size()
+  const now = performance.now()
+  fwOn = true; fwUntil = now + ms; finaleAt = fwUntil - 4500
+  for (let i = 0; i < (innerWidth > 900 ? 5 : 3); i++) setTimeout(launch, i * 140)   // opening salvo
+  nextLaunch = now + 900
+  cancelAnimationFrame(raf); raf = requestAnimationFrame(frame)
+}
+function stopFireworks() {
+  fwOn = false; rockets = []; sparks = []; flashes = []
+  cancelAnimationFrame(raf); ctx.clearRect(0, 0, W, H)
+  $('cele').hidden = true
+  root.classList.remove('celebrating')
+}
+
+// ── fullscreen & share ──
+$('fullBtn').onclick = () => {
+  if (document.fullscreenElement) document.exitFullscreen()
+  else root.requestFullscreen?.().catch(() => toast('เบราว์เซอร์นี้เปิดเต็มจอไม่ได้'))
+}
+$('shareBtn').onclick = () => {
+  if (!target) return toast('เลือกวันที่ก่อน')
+  const u = new URL(location.href.split(/[?#]/)[0])
+  u.searchParams.set('to', new Date(target).toISOString())
+  const t = $('dTitle').value.trim(); if (t) u.searchParams.set('t', t)
+  u.hash = 'countdown'
+  const ok = () => toast('คัดลอกลิงก์แล้ว ส่งให้เพื่อนเปิดดูเวลาเดียวกันได้')
+  navigator.clipboard ? navigator.clipboard.writeText(u.href).then(ok, () => prompt('คัดลอกลิงก์นี้', u.href)) : prompt('คัดลอกลิงก์นี้', u.href)
+}
+let toastT
+function toast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('on'), 1800) }
+
+// ── start: a shared link opens straight into "date" mode ──
+const q = new URLSearchParams(location.search)
+const shared = q.get('to') && new Date(q.get('to'))
+if (shared && !isNaN(shared)) {
+  const local = new Date(shared.getTime() - shared.getTimezoneOffset() * 60000).toISOString()
+  $('dDate').value = local.slice(0, 10); $('dTime').value = local.slice(11, 16)
+  $('dTitle').value = q.get('t') || ''
+  setMode('date')
+} else setMode('newyear')
+
+;(function loop() { tick(); setTimeout(loop, 250 - (Date.now() % 250)) })()
+})()
+
+
+// ── tab switching: #split / #party / #countdown (a shared countdown link carries ?to=…) ──
+;(() => {
+  const TOOLS = ['split', 'party', 'countdown']
+  const titles = { split: 'หารค่าอาหาร', party: 'เกมวงเหล้า', countdown: 'นับถอยหลัง' }
+  function show() {
+    let key = location.hash.slice(1)
+    if (!TOOLS.includes(key)) key = new URLSearchParams(location.search).has('to') ? 'countdown' : 'split'
+    for (const t of TOOLS) document.getElementById('t-' + t).hidden = t !== key
+    document.querySelectorAll('.switcher a').forEach(a => a.hash === '#' + key ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'))
+    document.body.classList.toggle('dark', key === 'countdown')
+    document.title = titles[key] + ' · Pawwwpack'
+    scrollTo(0, 0)
+  }
+  addEventListener('hashchange', show)
+  show()
+})()
+</script>
+</body>
+</html>

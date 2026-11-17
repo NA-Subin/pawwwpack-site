@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Event types — เที่ยว / ปาร์ตี้ / ทั้งคู่ · Pawwwpack design</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&amp;family=Mitr:wght@400;500&amp;display=swap">
+<style>
+
+a{color:#3F2E25}a:hover{color:#8A6A4A}
+</style>
+<style>
+body { margin: 0; background: #E9E1D4; font-family: 'Mitr', sans-serif; }
+.bar { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 10px 16px; background: #3F2E25; color: #FBF8F3; font-size: 14px; }
+.bar a { color: #FFE0C0; text-decoration: none; }
+.bar a:hover { color: #fff; }
+.bar b { font-weight: 500; flex: 1; min-width: 0; }
+.bar button { font: inherit; color: #3F2E25; background: #FFE0C0; border: 0; border-radius: 999px; padding: 4px 14px; cursor: pointer; }
+.stage { padding: 24px; overflow: auto; }
+.board { width: 1200px; transform-origin: 0 0; box-shadow: 0 10px 30px rgba(63,46,37,0.15); }
+.board > * { margin: 0 !important; }
+</style>
+</head>
+<body>
+<div class="bar"><a href="../index.html#screens">← กลับหน้าสรุป</a><b>Event types — เที่ยว / ปาร์ตี้ / ทั้งคู่</b><span>1200 × 600</span><button id="fit" type="button">ขนาดจริง</button></div>
+<div class="stage"><div class="board" id="board">
+<div style="width: 1200px; height: 600px; box-sizing: border-box; padding: 56px 64px; background: #FBF8F3; display: flex; flex-direction: column; gap: 28px; font-family: 'Mitr', sans-serif; color: #3F2E25">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 34px">Event types</div>
+<div style="font-size: 18px; color: #6E5F55">3 เมนูหลัก เลือกตอนสร้าง เพื่อให้ระบบรู้ว่าจะแยกหมวดและหารเงินแบบไหน</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px">
+<div style="height: 380px; box-sizing: border-box; border-radius: 24px; background: #F3EADB; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; align-items: center; gap: 12px">
+<svg viewBox="0 0 200 200" width="80" height="80" role="img" aria-label="แพนด้าแดงแบกเป้ — เที่ยว" style="display: block">
+<defs><clipPath id="tiClip2"><circle cx="100" cy="100" r="100"></circle></clipPath></defs>
+<g clip-path="url(#tiClip2)">
+<circle cx="100" cy="100" r="100" fill="#F3EADB"></circle>
+<g display="inline">
+<rect x="30" y="112" width="140" height="100" rx="30" fill="#E6D3B3"></rect>
+<path d="M40 140 H160" stroke="#CDB38C" stroke-width="3"></path>
+</g>
+<path d="M150 204 C190 196 196 152 176 126" stroke="#9E4436" stroke-width="28" stroke-linecap="round" fill="none"></path>
+<path d="M150 204 C190 196 196 152 176 126" stroke="#4E2620" stroke-width="28" stroke-dasharray="9 15" fill="none"></path>
+<path d="M44 212 C44 160 70 142 100 142 C130 142 156 160 156 212 Z" fill="#4E2620"></path>
+<g display="inline">
+<path d="M66 152 L72 212 M134 152 L128 212" stroke="#D9C29C" stroke-width="12" stroke-linecap="round"></path>
+<path d="M70 180 H130" stroke="#B8956A" stroke-width="5" stroke-linecap="round"></path>
+<rect x="93" y="174" width="14" height="12" rx="3" fill="#B8956A"></rect>
+</g>
+<path d="M46 72 C36 38 54 22 82 42 Z" fill="#FFF3E6"></path>
+<path d="M53 64 C48 44 59 35 74 46 Z" fill="#9E4436"></path>
+<path d="M154 72 C164 38 146 22 118 42 Z" fill="#FFF3E6"></path>
+<path d="M147 64 C152 44 141 35 126 46 Z" fill="#9E4436"></path>
+<circle cx="84" cy="48" r="10" fill="#9E4436"></circle>
+<circle cx="100" cy="44" r="11" fill="#9E4436"></circle>
+<circle cx="116" cy="48" r="10" fill="#9E4436"></circle>
+<ellipse cx="100" cy="92" rx="58" ry="48" fill="#9E4436"></ellipse>
+<circle cx="52" cy="112" r="13" fill="#FFF3E6"></circle>
+<circle cx="42" cy="104" r="9" fill="#FFF3E6"></circle>
+<circle cx="45" cy="121" r="9" fill="#FFF3E6"></circle>
+<circle cx="148" cy="112" r="13" fill="#FFF3E6"></circle>
+<circle cx="158" cy="104" r="9" fill="#FFF3E6"></circle>
+<circle cx="155" cy="121" r="9" fill="#FFF3E6"></circle>
+<ellipse cx="100" cy="114" rx="25" ry="17" fill="#FFF3E6"></ellipse>
+<ellipse cx="80" cy="74" rx="9" ry="5.5" fill="#FFF3E6"></ellipse>
+<ellipse cx="120" cy="74" rx="9" ry="5.5" fill="#FFF3E6"></ellipse>
+<path d="M82 96 L77 116 M118 96 L123 116" stroke="#4E2620" stroke-width="7" stroke-linecap="round"></path>
+<circle cx="82" cy="90" r="7" fill="#2A140E"></circle>
+<circle cx="118" cy="90" r="7" fill="#2A140E"></circle>
+<circle cx="84.5" cy="87.5" r="2.2" fill="#FFFFFF"></circle>
+<circle cx="120.5" cy="87.5" r="2.2" fill="#FFFFFF"></circle>
+<ellipse cx="100" cy="106" rx="7" ry="5" fill="#2A140E"></ellipse>
+<g display="inline">
+<path d="M100 111 q0 6 -6 7 M100 111 q0 6 6 7" stroke="#2A140E" stroke-width="2.5" fill="none" stroke-linecap="round"></path>
+</g>
+<g display="none">
+<circle cx="28" cy="66" r="5" fill="#E8C3BC"></circle>
+<circle cx="174" cy="72" r="4.5" fill="#D9C9E0"></circle>
+<circle cx="22" cy="92" r="3" fill="#B8956A"></circle>
+<circle cx="99" cy="117" r="3.5" fill="#2A140E"></circle>
+<path d="M101 118 L127 142" stroke="#E8A595" stroke-width="5" stroke-linecap="round"></path>
+<path d="M116 138 H150 L145 184 Q144 190 138 190 H128 Q122 190 121 184 Z" fill="#EEF4F7" stroke="#3F2E25" stroke-width="3" stroke-linejoin="round"></path>
+<path d="M118.6 158 H147.4 L145 184 Q144 188 138 188 H128 Q122 188 121 184 Z" fill="#E8C3BC"></path>
+<rect x="127" y="162" width="10" height="10" rx="2" fill="#FFFFFF" opacity="0.85"></rect>
+<ellipse cx="117" cy="170" rx="9" ry="10" fill="#6B3A2E" stroke="#2A140E" stroke-width="2"></ellipse>
+<ellipse cx="149" cy="164" rx="9" ry="10" fill="#6B3A2E" stroke="#2A140E" stroke-width="2"></ellipse>
+</g>
+</g>
+</svg>
+<div style="display: flex; flex-direction: column"><span style="font-weight: 500; font-size: 24px; line-height: 1.1">เที่ยว</span><span style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 16px; color: #8F6B47">Trip · Latte #E6D3B3</span></div>
+</div>
+<div style="font-size: 15px; color: #6E5F55">หมวดค่าใช้จ่าย</div>
+<div style="font-size: 17px; line-height: 1.5">เดินทาง · ที่พัก · ค่าเข้าชม / กิจกรรม · อาหารระหว่างทาง</div>
+<div style="font-size: 15px; color: #6E5F55">วิธีหาร</div>
+<div style="font-size: 16px; line-height: 1.5; color: #4F4037">หารเท่ากันทั้งแพ็ก หรือหารตามคนที่ใช้จริง เช่น ห้องพักแยกห้อง รถคนละคัน</div>
+</div>
+<div style="height: 380px; box-sizing: border-box; border-radius: 24px; background: #F3EADB; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; align-items: center; gap: 12px">
+<svg viewBox="0 0 200 200" width="80" height="80" role="img" aria-label="แพนด้าแดงจิบน้ำ — ปาร์ตี้" style="display: block">
+<defs><clipPath id="tiClip3"><circle cx="100" cy="100" r="100"></circle></clipPath></defs>
+<g clip-path="url(#tiClip3)">
+<circle cx="100" cy="100" r="100" fill="#F6E1DD"></circle>
+<g display="none">
+<rect x="30" y="112" width="140" height="100" rx="30" fill="#E6D3B3"></rect>
+<path d="M40 140 H160" stroke="#CDB38C" stroke-width="3"></path>
+</g>
+<path d="M150 204 C190 196 196 152 176 126" stroke="#9E4436" stroke-width="28" stroke-linecap="round" fill="none"></path>
+<path d="M150 204 C190 196 196 152 176 126" stroke="#4E2620" stroke-width="28" stroke-dasharray="9 15" fill="none"></path>
+<path d="M44 212 C44 160 70 142 100 142 C130 142 156 160 156 212 Z" fill="#4E2620"></path>
+<g display="none">
+<path d="M66 152 L72 212 M134 152 L128 212" stroke="#D9C29C" stroke-width="12" stroke-linecap="round"></path>
+<path d="M70 180 H130" stroke="#B8956A" stroke-width="5" stroke-linecap="round"></path>
+<rect x="93" y="174" width="14" height="12" rx="3" fill="#B8956A"></rect>
+</g>
+<path d="M46 72 C36 38 54 22 82 42 Z" fill="#FFF3E6"></path>
+<path d="M53 64 C48 44 59 35 74 46 Z" fill="#9E4436"></path>
+<path d="M154 72 C164 38 146 22 118 42 Z" fill="#FFF3E6"></path>
+<path d="M147 64 C152 44 141 35 126 46 Z" fill="#9E4436"></path>
+<circle cx="84" cy="48" r="10" fill="#9E4436"></circle>
+<circle cx="100" cy="44" r="11" fill="#9E4436"></circle>
+<circle cx="116" cy="48" r="10" fill="#9E4436"></circle>
+<ellipse cx="100" cy="92" rx="58" ry="48" fill="#9E4436"></ellipse>
+<circle cx="52" cy="112" r="13" fill="#FFF3E6"></circle>
+<circle cx="42" cy="104" r="9" fill="#FFF3E6"></circle>
+<circle cx="45" cy="121" r="9" fill="#FFF3E6"></circle>
+<circle cx="148" cy="112" r="13" fill="#FFF3E6"></circle>
+<circle cx="158" cy="104" r="9" fill="#FFF3E6"></circle>
+<circle cx="155" cy="121" r="9" fill="#FFF3E6"></circle>
+<ellipse cx="100" cy="114" rx="25" ry="17" fill="#FFF3E6"></ellipse>
+<ellipse cx="80" cy="74" rx="9" ry="5.5" fill="#FFF3E6"></ellipse>
+<ellipse cx="120" cy="74" rx="9" ry="5.5" fill="#FFF3E6"></ellipse>
+<path d="M82 96 L77 116 M118 96 L123 116" stroke="#4E2620" stroke-width="7" stroke-linecap="round"></path>
+<circle cx="82" cy="90" r="7" fill="#2A140E"></circle>
+<circle cx="118" cy="90" r="7" fill="#2A140E"></circle>
+<circle cx="84.5" cy="87.5" r="2.2" fill="#FFFFFF"></circle>
+<circle cx="120.5" cy="87.5" r="2.2" fill="#FFFFFF"></circle>
+<ellipse cx="100" cy="106" rx="7" ry="5" fill="#2A140E"></ellipse>
+<g display="none">
+<path d="M100 111 q0 6 -6 7 M100 111 q0 6 6 7" stroke="#2A140E" stroke-width="2.5" fill="none" stroke-linecap="round"></path>
+</g>
+<g display="inline">
+<circle cx="28" cy="66" r="5" fill="#E8C3BC"></circle>
+<circle cx="174" cy="72" r="4.5" fill="#D9C9E0"></circle>
+<circle cx="22" cy="92" r="3" fill="#B8956A"></circle>
+<circle cx="99" cy="117" r="3.5" fill="#2A140E"></circle>
+<path d="M101 118 L127 142" stroke="#E8A595" stroke-width="5" stroke-linecap="round"></path>
+<path d="M116 138 H150 L145 184 Q144 190 138 190 H128 Q122 190 121 184 Z" fill="#EEF4F7" stroke="#3F2E25" stroke-width="3" stroke-linejoin="round"></path>
+<path d="M118.6 158 H147.4 L145 184 Q144 188 138 188 H128 Q122 188 121 184 Z" fill="#E8C3BC"></path>
+<rect x="127" y="162" width="10" height="10" rx="2" fill="#FFFFFF" opacity="0.85"></rect>
+<ellipse cx="117" cy="170" rx="9" ry="10" fill="#6B3A2E" stroke="#2A140E" stroke-width="2"></ellipse>
+<ellipse cx="149" cy="164" rx="9" ry="10" fill="#6B3A2E" stroke="#2A140E" stroke-width="2"></ellipse>
+</g>
+</g>
+</svg>
+<div style="display: flex; flex-direction: column"><span style="font-weight: 500; font-size: 24px; line-height: 1.1">ปาร์ตี้</span><span style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 16px; color: #8F6B47">Pawty · Rose #E8C3BC</span></div>
+</div>
+<div style="font-size: 15px; color: #6E5F55">หมวดค่าใช้จ่าย</div>
+<div style="font-size: 17px; line-height: 1.5">อาหาร · เครื่องดื่ม · สถานที่ / โต๊ะ · ของตกแต่ง / เกม</div>
+<div style="font-size: 15px; color: #6E5F55">วิธีหาร</div>
+<div style="font-size: 16px; line-height: 1.5; color: #4F4037">อาหารหารทุกตัว เครื่องดื่มหารเฉพาะตัวที่ดื่ม และยกเว้นเจ้าของวันเกิดได้</div>
+</div>
+<div style="height: 380px; box-sizing: border-box; border-radius: 24px; background: #F3EADB; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; align-items: center; gap: 12px">
+<svg viewBox="0 0 200 200" width="80" height="80" role="img" aria-label="แพนด้าแดงแบกเป้และจิบน้ำ — เที่ยว + ปาร์ตี้" style="display: block">
+<defs><clipPath id="tiClip4"><circle cx="100" cy="100" r="100"></circle></clipPath></defs>
+<g clip-path="url(#tiClip4)">
+<circle cx="100" cy="100" r="100" fill="#ECE3F0"></circle>
+<g display="inline">
+<rect x="30" y="112" width="140" height="100" rx="30" fill="#E6D3B3"></rect>
+<path d="M40 140 H160" stroke="#CDB38C" stroke-width="3"></path>
+</g>
+<path d="M150 204 C190 196 196 152 176 126" stroke="#9E4436" stroke-width="28" stroke-linecap="round" fill="none"></path>
+<path d="M150 204 C190 196 196 152 176 126" stroke="#4E2620" stroke-width="28" stroke-dasharray="9 15" fill="none"></path>
+<path d="M44 212 C44 160 70 142 100 142 C130 142 156 160 156 212 Z" fill="#4E2620"></path>
+<g display="inline">
+<path d="M66 152 L72 212 M134 152 L128 212" stroke="#D9C29C" stroke-width="12" stroke-linecap="round"></path>
+<path d="M70 180 H130" stroke="#B8956A" stroke-width="5" stroke-linecap="round"></path>
+<rect x="93" y="174" width="14" height="12" rx="3" fill="#B8956A"></rect>
+</g>
+<path d="M46 72 C36 38 54 22 82 42 Z" fill="#FFF3E6"></path>
+<path d="M53 64 C48 44 59 35 74 46 Z" fill="#9E4436"></path>
+<path d="M154 72 C164 38 146 22 118 42 Z" fill="#FFF3E6"></path>
+<path d="M147 64 C152 44 141 35 126 46 Z" fill="#9E4436"></path>
+<circle cx="84" cy="48" r="10" fill="#9E4436"></circle>
+<circle cx="100" cy="44" r="11" fill="#9E4436"></circle>
+<circle cx="116" cy="48" r="10" fill="#9E4436"></circle>
+<ellipse cx="100" cy="92" rx="58" ry="48" fill="#9E4436"></ellipse>
+<circle cx="52" cy="112" r="13" fill="#FFF3E6"></circle>
+<circle cx="42" cy="104" r="9" fill="#FFF3E6"></circle>
+<circle cx="45" cy="121" r="9" fill="#FFF3E6"></circle>
+<circle cx="148" cy="112" r="13" fill="#FFF3E6"></circle>
+<circle cx="158" cy="104" r="9" fill="#FFF3E6"></circle>
+<circle cx="155" cy="121" r="9" fill="#FFF3E6"></circle>
+<ellipse cx="100" cy="114" rx="25" ry="17" fill="#FFF3E6"></ellipse>
+<ellipse cx="80" cy="74" rx="9" ry="5.5" fill="#FFF3E6"></ellipse>
+<ellipse cx="120" cy="74" rx="9" ry="5.5" fill="#FFF3E6"></ellipse>
+<path d="M82 96 L77 116 M118 96 L123 116" stroke="#4E2620" stroke-width="7" stroke-linecap="round"></path>
+<circle cx="82" cy="90" r="7" fill="#2A140E"></circle>
+<circle cx="118" cy="90" r="7" fill="#2A140E"></circle>
+<circle cx="84.5" cy="87.5" r="2.2" fill="#FFFFFF"></circle>
+<circle cx="120.5" cy="87.5" r="2.2" fill="#FFFFFF"></circle>
+<ellipse cx="100" cy="106" rx="7" ry="5" fill="#2A140E"></ellipse>
+<g display="none">
+<path d="M100 111 q0 6 -6 7 M100 111 q0 6 6 7" stroke="#2A140E" stroke-width="2.5" fill="none" stroke-linecap="round"></path>
+</g>
+<g display="inline">
+<circle cx="28" cy="66" r="5" fill="#E8C3BC"></circle>
+<circle cx="174" cy="72" r="4.5" fill="#D9C9E0"></circle>
+<circle cx="22" cy="92" r="3" fill="#B8956A"></circle>
+<circle cx="99" cy="117" r="3.5" fill="#2A140E"></circle>
+<path d="M101 118 L127 142" stroke="#E8A595" stroke-width="5" stroke-linecap="round"></path>
+<path d="M116 138 H150 L145 184 Q144 190 138 190 H128 Q122 190 121 184 Z" fill="#EEF4F7" stroke="#3F2E25" stroke-width="3" stroke-linejoin="round"></path>
+<path d="M118.6 158 H147.4 L145 184 Q144 188 138 188 H128 Q122 188 121 184 Z" fill="#E8C3BC"></path>
+<rect x="127" y="162" width="10" height="10" rx="2" fill="#FFFFFF" opacity="0.85"></rect>
+<ellipse cx="117" cy="170" rx="9" ry="10" fill="#6B3A2E" stroke="#2A140E" stroke-width="2"></ellipse>
+<ellipse cx="149" cy="164" rx="9" ry="10" fill="#6B3A2E" stroke="#2A140E" stroke-width="2"></ellipse>
+</g>
+</g>
+</svg>
+<div style="display: flex; flex-direction: column"><span style="font-weight: 500; font-size: 24px; line-height: 1.1">เที่ยว + ปาร์ตี้</span><span style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 16px; color: #8F6B47">Trip &amp; Pawty · Lilac #D9C9E0</span></div>
+</div>
+<div style="font-size: 15px; color: #6E5F55">หมวดค่าใช้จ่าย</div>
+<div style="font-size: 17px; line-height: 1.5">ทุกหมวดของเที่ยวและปาร์ตี้ บิลแต่ละใบติดป้ายว่าเป็นส่วนไหน</div>
+<div style="font-size: 15px; color: #6E5F55">วิธีหาร</div>
+<div style="font-size: 16px; line-height: 1.5; color: #4F4037">สรุปแยกยอดเที่ยวกับยอดปาร์ตี้ เพื่อนที่มาร่วมแค่คืนปาร์ตี้จ่ายเฉพาะส่วนนั้น</div>
+</div>
+</div>
+</div>
+</div></div>
+<script>
+(() => {
+  const board = document.getElementById('board'), btn = document.getElementById('fit'), W = 1200, H = 600
+  let fit = true
+  function apply() {
+    const avail = document.querySelector('.stage').clientWidth - 48
+    const s = fit ? Math.min(1, avail / W) : 1
+    board.style.transform = s < 1 ? 'scale(' + s + ')' : ''
+    board.parentElement.style.height = s < 1 ? (H * s + 48) + 'px' : ''
+    btn.textContent = fit ? 'ขนาดจริง' : 'พอดีจอ'
+  }
+  btn.onclick = () => { fit = !fit; apply() }
+  addEventListener('resize', apply)
+  apply()
+})()
+</script>
+</body>
+</html>

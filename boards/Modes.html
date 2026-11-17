@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pack modes — แพนด้าแต่ละแบบ · Pawwwpack design</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&amp;family=Mitr:wght@400;500&amp;display=swap">
+<style>
+
+a{color:#3F2E25}a:hover{color:#8A6A4A}
+</style>
+<style>
+body { margin: 0; background: #E9E1D4; font-family: 'Mitr', sans-serif; }
+.bar { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 10px 16px; background: #3F2E25; color: #FBF8F3; font-size: 14px; }
+.bar a { color: #FFE0C0; text-decoration: none; }
+.bar a:hover { color: #fff; }
+.bar b { font-weight: 500; flex: 1; min-width: 0; }
+.bar button { font: inherit; color: #3F2E25; background: #FFE0C0; border: 0; border-radius: 999px; padding: 4px 14px; cursor: pointer; }
+.stage { padding: 24px; overflow: auto; }
+.board { width: 1200px; transform-origin: 0 0; box-shadow: 0 10px 30px rgba(63,46,37,0.15); }
+.board > * { margin: 0 !important; }
+</style>
+</head>
+<body>
+<div class="bar"><a href="../index.html#screens">← กลับหน้าสรุป</a><b>Pack modes — แพนด้าแต่ละแบบ</b><span>1200 × 560</span><button id="fit" type="button">ขนาดจริง</button></div>
+<div class="stage"><div class="board" id="board">
+<div style="width: 1200px; height: 560px; box-sizing: border-box; padding: 56px 64px; background: #FBF8F3; display: flex; flex-direction: column; gap: 32px; font-family: 'Mitr', sans-serif; color: #3F2E25">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 34px">Pack modes</div>
+<div style="font-size: 18px; color: #6E5F55">ผู้ใช้แต่ละคนคือแพนด้าแดงหนึ่งตัว จะเที่ยวแบบสันโดษหรือรวมแก๊งก็ได้</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px">
+<div style="height: 340px; box-sizing: border-box; border-radius: 24px; background: #F3EADB; padding: 24px; display: flex; flex-direction: column; gap: 10px">
+<svg viewBox="0 0 220 140" width="100%" height="150" aria-hidden="true">
+<symbol id="hS" viewBox="0 0 100 100"><path d="M22 42 C16 20 28 12 42 26 Z" fill="#FFF3E6"></path><path d="M26 38 C23 24 30 20 38 28 Z" fill="#9E4436"></path><path d="M78 42 C84 20 72 12 58 26 Z" fill="#FFF3E6"></path><path d="M74 38 C77 24 70 20 62 28 Z" fill="#9E4436"></path><ellipse cx="50" cy="54" rx="34" ry="28" fill="#9E4436"></ellipse><circle cx="22" cy="64" r="8" fill="#FFF3E6"></circle><circle cx="78" cy="64" r="8" fill="#FFF3E6"></circle><ellipse cx="50" cy="66" rx="14" ry="10" fill="#FFF3E6"></ellipse><ellipse cx="39" cy="43" rx="5" ry="3" fill="#FFF3E6"></ellipse><ellipse cx="61" cy="43" rx="5" ry="3" fill="#FFF3E6"></ellipse><path d="M40 56 L37 67 M60 56 L63 67" stroke="#4E2620" stroke-width="4" stroke-linecap="round"></path><circle cx="40" cy="52" r="4" fill="#2A140E"></circle><circle cx="60" cy="52" r="4" fill="#2A140E"></circle><ellipse cx="50" cy="61" rx="4" ry="3" fill="#2A140E"></ellipse></symbol>
+<path d="M20 120 C70 120 80 96 130 100 S190 70 205 40" stroke="#C9B08A" stroke-width="3" stroke-dasharray="2 9" stroke-linecap="round" fill="none"></path>
+<use href="#hS" x="60" y="20" width="100" height="100"></use>
+</svg>
+<div style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 26px">Lone Paw</div>
+<div style="font-size: 17px; line-height: 1.45; color: #4F4037">เที่ยวเดี่ยวแบบสันโดษ วางแผนเอง จดค่าใช้จ่ายเอง เก็บรูปไว้คนเดียว</div>
+<div style="margin-top: auto; font-size: 14px; color: #6E5F55">1 ตัว</div>
+</div>
+<div style="height: 340px; box-sizing: border-box; border-radius: 24px; background: #F3EADB; padding: 24px; display: flex; flex-direction: column; gap: 10px">
+<svg viewBox="0 0 220 140" width="100%" height="150" aria-hidden="true">
+<symbol id="hD" viewBox="0 0 100 100"><path d="M22 42 C16 20 28 12 42 26 Z" fill="#FFF3E6"></path><path d="M26 38 C23 24 30 20 38 28 Z" fill="#9E4436"></path><path d="M78 42 C84 20 72 12 58 26 Z" fill="#FFF3E6"></path><path d="M74 38 C77 24 70 20 62 28 Z" fill="#9E4436"></path><ellipse cx="50" cy="54" rx="34" ry="28" fill="#9E4436"></ellipse><circle cx="22" cy="64" r="8" fill="#FFF3E6"></circle><circle cx="78" cy="64" r="8" fill="#FFF3E6"></circle><ellipse cx="50" cy="66" rx="14" ry="10" fill="#FFF3E6"></ellipse><ellipse cx="39" cy="43" rx="5" ry="3" fill="#FFF3E6"></ellipse><ellipse cx="61" cy="43" rx="5" ry="3" fill="#FFF3E6"></ellipse><path d="M40 56 L37 67 M60 56 L63 67" stroke="#4E2620" stroke-width="4" stroke-linecap="round"></path><circle cx="40" cy="52" r="4" fill="#2A140E"></circle><circle cx="60" cy="52" r="4" fill="#2A140E"></circle><ellipse cx="50" cy="61" rx="4" ry="3" fill="#2A140E"></ellipse></symbol>
+<use href="#hD" x="22" y="26" width="96" height="96"></use>
+<use href="#hD" x="102" y="26" width="96" height="96"></use>
+</svg>
+<div style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 26px">Twin Paws</div>
+<div style="font-size: 17px; line-height: 1.45; color: #4F4037">ทริปคู่รักหรือคู่หู หารเงินกันสองคน มีอัลบั้มที่เปิดดูได้แค่สองคน</div>
+<div style="margin-top: auto; font-size: 14px; color: #6E5F55">2 ตัว</div>
+</div>
+<div style="height: 340px; box-sizing: border-box; border-radius: 24px; background: #F3EADB; padding: 24px; display: flex; flex-direction: column; gap: 10px">
+<svg viewBox="0 0 220 140" width="100%" height="150" aria-hidden="true">
+<symbol id="hF" viewBox="0 0 100 100"><path d="M22 42 C16 20 28 12 42 26 Z" fill="#FFF3E6"></path><path d="M26 38 C23 24 30 20 38 28 Z" fill="#9E4436"></path><path d="M78 42 C84 20 72 12 58 26 Z" fill="#FFF3E6"></path><path d="M74 38 C77 24 70 20 62 28 Z" fill="#9E4436"></path><ellipse cx="50" cy="54" rx="34" ry="28" fill="#9E4436"></ellipse><circle cx="22" cy="64" r="8" fill="#FFF3E6"></circle><circle cx="78" cy="64" r="8" fill="#FFF3E6"></circle><ellipse cx="50" cy="66" rx="14" ry="10" fill="#FFF3E6"></ellipse><ellipse cx="39" cy="43" rx="5" ry="3" fill="#FFF3E6"></ellipse><ellipse cx="61" cy="43" rx="5" ry="3" fill="#FFF3E6"></ellipse><path d="M40 56 L37 67 M60 56 L63 67" stroke="#4E2620" stroke-width="4" stroke-linecap="round"></path><circle cx="40" cy="52" r="4" fill="#2A140E"></circle><circle cx="60" cy="52" r="4" fill="#2A140E"></circle><ellipse cx="50" cy="61" rx="4" ry="3" fill="#2A140E"></ellipse></symbol>
+<use href="#hF" x="6" y="14" width="104" height="104"></use>
+<use href="#hF" x="96" y="36" width="80" height="80"></use>
+<use href="#hF" x="160" y="62" width="56" height="56"></use>
+</svg>
+<div style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 26px">The Den</div>
+<div style="font-size: 17px; line-height: 1.45; color: #4F4037">ทริปครอบครัว พ่อแม่ลูกอยู่ในโพรงเดียวกัน วางแผนวันหยุดร่วมกัน</div>
+<div style="margin-top: auto; font-size: 14px; color: #6E5F55">3–10 ตัว</div>
+</div>
+<div style="height: 340px; box-sizing: border-box; border-radius: 24px; background: #F3EADB; padding: 24px; display: flex; flex-direction: column; gap: 10px">
+<svg viewBox="0 0 220 140" width="100%" height="150" aria-hidden="true">
+<symbol id="hP" viewBox="0 0 100 100"><path d="M22 42 C16 20 28 12 42 26 Z" fill="#FFF3E6"></path><path d="M26 38 C23 24 30 20 38 28 Z" fill="#9E4436"></path><path d="M78 42 C84 20 72 12 58 26 Z" fill="#FFF3E6"></path><path d="M74 38 C77 24 70 20 62 28 Z" fill="#9E4436"></path><ellipse cx="50" cy="54" rx="34" ry="28" fill="#9E4436"></ellipse><circle cx="22" cy="64" r="8" fill="#FFF3E6"></circle><circle cx="78" cy="64" r="8" fill="#FFF3E6"></circle><ellipse cx="50" cy="66" rx="14" ry="10" fill="#FFF3E6"></ellipse><ellipse cx="39" cy="43" rx="5" ry="3" fill="#FFF3E6"></ellipse><ellipse cx="61" cy="43" rx="5" ry="3" fill="#FFF3E6"></ellipse><path d="M40 56 L37 67 M60 56 L63 67" stroke="#4E2620" stroke-width="4" stroke-linecap="round"></path><circle cx="40" cy="52" r="4" fill="#2A140E"></circle><circle cx="60" cy="52" r="4" fill="#2A140E"></circle><ellipse cx="50" cy="61" rx="4" ry="3" fill="#2A140E"></ellipse></symbol>
+<use href="#hP" x="10" y="6" width="64" height="64"></use>
+<use href="#hP" x="78" y="6" width="64" height="64"></use>
+<use href="#hP" x="146" y="6" width="64" height="64"></use>
+<use href="#hP" x="44" y="68" width="64" height="64"></use>
+<use href="#hP" x="112" y="68" width="64" height="64"></use>
+</svg>
+<div style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 26px">The Pack</div>
+<div style="font-size: 17px; line-height: 1.45; color: #4F4037">แก๊งเพื่อนที่รู้ใจหรือทีมที่ทำงาน หารบิลอัตโนมัติ แชร์รูปลงอัลบั้มกลาง</div>
+<div style="margin-top: auto; font-size: 14px; color: #6E5F55">สูงสุด 10 ตัว</div>
+</div>
+</div>
+</div>
+</div></div>
+<script>
+(() => {
+  const board = document.getElementById('board'), btn = document.getElementById('fit'), W = 1200, H = 560
+  let fit = true
+  function apply() {
+    const avail = document.querySelector('.stage').clientWidth - 48
+    const s = fit ? Math.min(1, avail / W) : 1
+    board.style.transform = s < 1 ? 'scale(' + s + ')' : ''
+    board.parentElement.style.height = s < 1 ? (H * s + 48) + 'px' : ''
+    btn.textContent = fit ? 'ขนาดจริง' : 'พอดีจอ'
+  }
+  btn.onclick = () => { fit = !fit; apply() }
+  addEventListener('resize', apply)
+  apply()
+})()
+</script>
+</body>
+</html>
