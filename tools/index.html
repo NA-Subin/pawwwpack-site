@@ -971,6 +971,7 @@ let game = null
 root.querySelectorAll('.game').forEach(b => b.onclick = () => {
   game = b.dataset.game
   root.querySelectorAll('.game').forEach(x => x.setAttribute('aria-pressed', x === b))
+  history.replaceState(null, '', location.pathname + location.search + '#party-' + game)
   for (const g of ['bomb', 'wheel', 'dice', 'cards', 'arrow', 'hot']) $('g-' + g).hidden = g !== game
   if (game !== 'hot') hot.stop()
   refresh()
@@ -1567,6 +1568,15 @@ $('hotSkip').onclick = () => { let c; do c = HOT_CATS[rand(HOT_CATS.length)]; wh
 addEventListener('hashchange', () => hot.stop())   // leaving the party tab stops the ticking
 
 renderNames()
+
+// deep links: a short delay lets the tab switcher show this tab first, then we scroll to the game
+function openFromHash() {
+  const m = location.hash.match(/^#party-([a-z]+)$/)
+  const btn = m && root.querySelector(`.game[data-game="${m[1]}"]`)
+  if (btn && btn.dataset.game !== game) setTimeout(() => btn.click(), 0)
+}
+addEventListener('hashchange', openFromHash)
+openFromHash()
 })()
 
 // ═══ 🎆 นับถอยหลัง ═══
@@ -1943,7 +1953,7 @@ if (shared && !isNaN(shared)) {
   const TOOLS = ['split', 'party', 'countdown']
   const titles = { split: 'หารค่าอาหาร', party: 'เกมวงเหล้า', countdown: 'นับถอยหลัง' }
   function show() {
-    let key = location.hash.slice(1)
+    let key = location.hash.slice(1).split('-')[0]   // #party-arrow → party (the rest picks a game inside it)
     if (!TOOLS.includes(key)) key = new URLSearchParams(location.search).has('to') ? 'countdown' : 'split'
     for (const t of TOOLS) document.getElementById('t-' + t).hidden = t !== key
     document.querySelectorAll('.switcher a').forEach(a => a.hash === '#' + key ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'))
