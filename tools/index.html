@@ -130,7 +130,7 @@ body.dark .switcher a[aria-current="page"] { background: #FBF3E6; color: #1B1E3D
 #t-party .name button { width: 22px; height: 22px; border: 0; border-radius: 50%; background: transparent; cursor: pointer; color: var(--muted); }
 #t-party .name button:hover { background: #FEE2E2; color: #DC2626; }
 #t-party .hint { font-size: 13px; color: var(--muted); margin: 0; }
-#t-party .games { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+#t-party .games { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 #t-party .game { all: unset; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 12px 4px; border-radius: 18px; background: #fff; border: 1.5px solid var(--line); text-align: center; transition: .15s; }
 #t-party .game:hover { transform: translateY(-2px); border-color: var(--paw); }
 #t-party .game[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
@@ -157,12 +157,37 @@ body.dark .switcher a[aria-current="page"] { background: #FBF3E6; color: #1B1E3D
 #t-party .hist { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
 #t-party .hist span { font-size: 12.5px; padding: 3px 10px; border-radius: 999px; background: var(--soft); color: var(--muted); }
 #t-party .warn { color: #DC2626; font-size: 13px; text-align: center; margin: -6px 0 0; }
+#t-party .arrow-board { position: relative; width: min(320px, 82vw); aspect-ratio: 1; margin: 6px auto; border-radius: 50%; background: radial-gradient(circle, #fff 0 52%, var(--soft) 53% 100%); border: 2px solid var(--line); }
+#t-party .seat { position: absolute; transform: translate(-50%, -50%); max-width: 36%; padding: 3px 10px; border-radius: 999px; background: #fff; border: 1px solid var(--line); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: background .2s, color .2s, transform .2s; }
+#t-party .seat.me { border-style: dashed; color: var(--muted); }
+#t-party .seat.near { background: var(--paw-soft); border-color: var(--paw); color: var(--paw-dark); }
+#t-party .wheel-box svg.w path.on { filter: brightness(1.25) saturate(1.15); }
+#t-party .spin-status { min-height: 60px; display: flex; align-items: center; justify-content: center; text-align: center; font: 600 20px/1.3 'Fredoka', 'Mitr', sans-serif; color: var(--muted); }
+#t-party .spin-status.tease { color: var(--paw); animation: teasePulse .5s ease-in-out infinite alternate; }
+@keyframes teasePulse { to { transform: scale(1.08) } }
+#t-party .seat.hit { background: var(--paw); border-color: var(--paw); color: #fff; transform: translate(-50%, -50%) scale(1.18); }
+#t-party .arrow-board svg { position: absolute; inset: 20%; width: 60%; height: 60%; will-change: transform; filter: drop-shadow(0 6px 10px rgba(63,46,37,.25)); }
+#t-party .arrow-hint { position: absolute; left: 0; right: 0; bottom: 9%; text-align: center; font-size: 12px; color: var(--muted); }
+#t-party .choice { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+#t-party .choice button { min-height: 64px; border-radius: 18px; border: 0; font-size: 16px; cursor: pointer; padding: 8px; }
+#t-party .choice .ask { background: #E0E7FF; color: #312E81; }
+#t-party .choice .drink { background: var(--paw); color: #fff; }
+#t-party .choice .drink.sober { background: var(--sober); }
+#t-party .qcard { border-radius: 20px; padding: 18px; text-align: center; background: linear-gradient(160deg, #E0E7FF, #C7D2FE); display: flex; flex-direction: column; gap: 8px; }
+#t-party .qcard b { font: 600 19px/1.45 'Fredoka', 'Mitr', sans-serif; }
+#t-party .qcard.drinkcard { background: linear-gradient(160deg, #FFE0C0, #F9C08A); }
+#t-party .hot-stage { border-radius: 22px; padding: 22px 16px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; background: rgb(255, calc(243 - var(--heat, 0) * 140), calc(230 - var(--heat, 0) * 170)); transition: background .4s; }
+#t-party .hot-cat { font: 700 clamp(26px, 8vw, 38px)/1.3 'Fredoka', 'Mitr', sans-serif; }
+#t-party .hot-bomb { font-size: 76px; line-height: 1; display: inline-block; }
+#t-party .hot-stage.live .hot-bomb { animation: throb var(--beat, 1s) ease-in-out infinite; }
+#t-party .hot-passes { font-size: 13px; color: var(--muted); }
+@keyframes throb { 50% { transform: scale(1.18) rotate(-7deg) } }
 #t-party .boom { border-radius: 22px; padding: 22px; text-align: center; color: #fff; background: radial-gradient(circle at 50% 20%, #D4674A, #9E4436 60%, #5E261E); display: flex; flex-direction: column; gap: 6px; animation: shake .5s; }
 #t-party .boom .e { font-size: 48px; line-height: 1; }
 #t-party .boom b { font: 700 28px 'Fredoka', 'Mitr', sans-serif; }
 @keyframes shake { 10%, 50%, 90% { transform: translateX(-6px) } 30%, 70% { transform: translateX(6px) } }
 #t-party .wheel-box { position: relative; width: min(300px, 80vw); aspect-ratio: 1; margin: 0 auto; }
-#t-party .wheel-box svg.w { width: 100%; height: 100%; transition: transform 3.6s cubic-bezier(.17,.67,.12,.99); filter: drop-shadow(0 8px 18px rgba(63,46,37,.2)); }
+#t-party .wheel-box svg.w { width: 100%; height: 100%; will-change: transform; filter: drop-shadow(0 8px 18px rgba(63,46,37,.2)); }
 #t-party .wheel-box .pin { position: absolute; top: -6px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 14px solid transparent; border-right: 14px solid transparent; border-top: 26px solid var(--ink); z-index: 1; }
 #t-party .edit { background: var(--bg); border: 1px solid var(--line); border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
 #t-party .edit textarea { font: inherit; font-size: 14px; border: 1.5px solid var(--line); border-radius: 12px; padding: 8px 12px; min-height: 120px; resize: vertical; outline: none; }
@@ -170,7 +195,28 @@ body.dark .switcher a[aria-current="page"] { background: #FBF3E6; color: #1B1E3D
 #t-party .link { all: unset; cursor: pointer; color: var(--paw); text-decoration: underline; font-size: 13px; align-self: flex-start; }
 #t-party .dice { all: unset; cursor: pointer; display: flex; justify-content: center; gap: 14px; padding: 12px 0; width: 100%; }
 #t-party .dice svg { width: 84px; height: 84px; filter: drop-shadow(0 6px 10px rgba(63,46,37,.18)); }
-#t-party .rolling svg { animation: roll .14s linear infinite; }
+#t-party .dice svg.tumble { animation: roll .14s linear infinite; }
+#t-party .dice svg.teeter { animation: teeter .3s ease-in-out infinite alternate; }
+@keyframes teeter { from { transform: rotate(-16deg) translateY(-4px) } to { transform: rotate(16deg) translateY(2px) } }
+#t-party .range.danger { color: #DC2626; animation: throb .9s ease-in-out infinite; }
+#t-party .bar.danger i { background: #DC2626; }
+#t-party .danger-tag { display: inline-block; margin-top: 4px; font-size: 12.5px; padding: 2px 10px; border-radius: 999px; background: #FEE2E2; color: #B91C1C; }
+#t-party .qtag { align-self: center; font-size: 12px; padding: 2px 10px; border-radius: 999px; background: rgba(255,255,255,.75); }
+#t-party .pcard.shuffling div { animation: cardShake .12s linear infinite; }
+@keyframes cardShake { 25% { transform: rotate(-4deg) translateX(-4px) } 75% { transform: rotate(4deg) translateX(4px) } }
+#t-party .pcard div.special { box-shadow: 0 0 0 4px #FFD54A, 0 0 34px rgba(255,190,60,.75), 0 14px 30px rgba(63,46,37,.18); }
+#t-party .pcard .ribbon { font-style: normal; font: 700 15px 'Fredoka', 'Mitr', sans-serif; padding: 4px 14px; border-radius: 999px; background: #3F2E25; color: #FFD54A; }
+#t-party .pcard .sp-note { font-style: normal; font-size: 13.5px; padding: 6px 12px; border-radius: 12px; background: rgba(255,255,255,.8); }
+#t-party .d-love { background: linear-gradient(160deg, #FFE4EC, #FBB6CE); }
+#t-party .d-heartbreak { background: linear-gradient(160deg, #EDE9FE, #C4B5FD); }
+#t-party .d-ex { background: linear-gradient(160deg, #F1F5F9, #CBD5E1); }
+#t-party .d-money { background: linear-gradient(160deg, #ECFDF5, #A7F3D0); }
+#t-party .d-work { background: linear-gradient(160deg, #E0F2FE, #93C5FD); }
+#t-party .d-friends { background: linear-gradient(160deg, #FEF9C3, #FDE68A); }
+#t-party .d-trip { background: linear-gradient(160deg, #CCFBF1, #5EEAD4); }
+#t-party .d-secret { background: linear-gradient(160deg, #E5E7EB, #9CA3AF); }
+#t-party .d-random { background: linear-gradient(160deg, #FFEDD5, #FDBA74); }
+#t-party .hot-event { font: 600 16px/1.3 'Fredoka', 'Mitr', sans-serif; padding: 6px 16px; border-radius: 999px; background: #3F2E25; color: #FFD54A; animation: pop .35s ease-out; }
 @keyframes roll { 50% { transform: rotate(14deg) scale(.94) } }
 #t-party .pcard { all: unset; cursor: pointer; display: block; width: min(270px, 78vw); margin: 0 auto; }
 #t-party .pcard div { aspect-ratio: 5 / 7; border-radius: 24px; padding: 22px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; box-shadow: 0 14px 30px rgba(63,46,37,.18); }
@@ -348,6 +394,8 @@ body.dark .switcher a[aria-current="page"] { background: #FBF3E6; color: #1B1E3D
     <button class="game" data-game="wheel"><span>🎡</span><b>วงล้อปาร์ตี้</b></button>
     <button class="game" data-game="dice"><span>🎲</span><b>ลูกเต๋า</b></button>
     <button class="game" data-game="cards"><span>🃏</span><b>สุ่มการ์ด</b></button>
+    <button class="game" data-game="arrow"><span>🎯</span><b>หมุนลูกศร</b></button>
+    <button class="game" data-game="hot"><span>💥</span><b>ระเบิดส่งต่อ</b></button>
   </nav>
 
   <!-- 💣 -->
@@ -359,14 +407,16 @@ body.dark .switcher a[aria-current="page"] { background: #FBF3E6; color: #1B1E3D
       <div class="center" style="margin-top:10px">
         <div class="muted">เลขลับอยู่ระหว่าง</div>
         <div class="range" id="party-bombRange"></div>
-        <div class="bar"><i id="party-bombBar"></i></div>
+        <div class="bar" id="party-bombBarBox"><i id="party-bombBar"></i></div>
         <div class="muted" id="party-bombLeft" style="margin-top:4px"></div>
+        <div id="party-bombDanger"></div>
       </div>
       <form class="row" id="party-bombForm" style="margin-top:14px" autocomplete="off">
         <input inputmode="numeric" id="party-bombGuess" style="flex:1;min-width:0;text-align:center;font-size:20px" aria-label="ทายเลข">
         <button class="btn" type="submit" style="padding:0 26px">ทาย</button>
       </form>
       <p class="warn" id="party-bombWarn"></p>
+      <div id="party-bombSus" aria-live="polite"></div>
     </div>
     <div id="party-bombLose" hidden></div>
     <div class="hist" id="party-bombHist"></div>
@@ -425,6 +475,39 @@ body.dark .switcher a[aria-current="page"] { background: #FBF3E6; color: #1B1E3D
       </form>
       <div class="names" id="party-customList"></div>
     </div>
+  </section>
+
+  <!-- 🎯 -->
+  <section class="card" id="party-g-arrow" hidden>
+    <h2>🎯 หมุนลูกศร <small>วางมือถือไว้กลางวง</small></h2>
+    <div class="chips" id="party-arrowTopics" aria-label="หมวดคำถาม"></div>
+    <div class="turn" id="party-arrowTurn"></div>
+    <div class="arrow-board" id="party-arrowBoard">
+      <svg viewBox="-50 -50 100 100" id="party-arrow" aria-hidden="true">
+        <path d="M0 -46 L13 -22 L5 -22 L5 30 Q5 38 0 40 Q-5 38 -5 30 L-5 -22 L-13 -22 Z" fill="#9E4436" stroke="#5E261E" stroke-width="2" stroke-linejoin="round"/>
+        <circle r="9" fill="#3F2E25"/><circle r="3.5" fill="#FBF8F3"/>
+      </svg>
+    </div>
+    <div id="party-arrowResult" aria-live="polite"></div>
+    <button class="btn big" type="button" id="party-arrowBtn">หมุนเลย!</button>
+  </section>
+
+  <!-- 💥 -->
+  <section class="card" id="party-g-hot" hidden>
+    <h2>💥 ระเบิดส่งต่อ <small>ตอบ 1 คำ แล้วรีบส่งมือถือ</small></h2>
+    <div class="hot-stage" id="party-hotStage">
+      <span class="hot-bomb" aria-hidden="true">💣</span>
+      <div class="muted" id="party-hotLabel">หมวด</div>
+      <div class="hot-cat" id="party-hotCat"></div>
+      <div class="hot-event" id="party-hotEvent" hidden></div>
+      <div class="hot-passes" id="party-hotPasses"></div>
+    </div>
+    <div id="party-hotLose" hidden></div>
+    <div class="row">
+      <button class="btn big" type="button" id="party-hotBtn">เริ่ม! 💣</button>
+      <button class="btn ghost" type="button" id="party-hotSkip" title="เปลี่ยนหมวด">🔀</button>
+    </div>
+    <p class="hint">กติกา: เห็นหมวดแล้วตอบ 1 คำที่ยังไม่มีใครพูด แล้วส่งมือถือให้คนถัดไป ระเบิดตั้งเวลาลับไว้ ติ๊กเร็วขึ้นเรื่อยๆ — ตูมในมือใคร คนนั้นแพ้ ตอบซ้ำหรือคิดนานเกินถือว่าแพ้</p>
   </section>
 
   <footer>
@@ -709,6 +792,128 @@ const C = {
   },
 }
 
+// ── question bank by topic: used by 🎯 spin the arrow and as extra 🃏 card decks ──
+const QBANK = {
+  love: { name: '💘 ความรัก', q: [
+    'ตอนนี้มีคนที่แอบชอบอยู่ไหม ใบ้ตัวอักษรแรกของชื่อมา',
+    'สเปกในฝันแบบละเอียด 3 ข้อ',
+    'รักแรกพบมีจริงไหม เคยเป็นไหม',
+    'เดตแรกที่ดีที่สุด หรือแย่ที่สุดของคุณคืออะไร',
+    'นิสัยของแฟนที่ทนไม่ได้ที่สุดคืออะไร',
+    'เคยจีบใครแล้วแป้กหนักที่สุด เล่ามา',
+    'ความรักกับเงิน อะไรสำคัญกว่า เพราะอะไร',
+    'คบใครนานที่สุดกี่ปีกี่เดือน',
+    'ถ้าแฟนลืมวันครบรอบ จะทำยังไง',
+    'ใครในวงนี้น่าจะเป็นแฟนที่ดีที่สุด เพราะอะไร',
+    'เคยนั่งส่องโซเชียลคนที่ชอบนานที่สุดกี่ชั่วโมง',
+    'ประโยคจีบที่เคยใช้แล้วได้ผลที่สุดคืออะไร',
+    'ถ้าต้องเลือกระหว่างคนที่รักเรา กับคนที่เรารัก เลือกแบบไหน',
+  ] },
+  heartbreak: { name: '💔 อกหัก', q: [
+    'อกหักครั้งที่หนักที่สุด ผ่านมาได้ยังไง',
+    'เพลงอกหักประจำตัวคือเพลงอะไร ร้องให้ฟังท่อนนึง',
+    'เคยร้องไห้เพราะความรักติดต่อกันนานที่สุดกี่วัน',
+    'เคยโดนเทแบบหายไปเฉยๆ ไม่บอกลาไหม',
+    'สิ่งที่ทำหลังเลิกกัน ที่ตอนนี้คิดแล้วยังอาย',
+    'เป็นคนบอกเลิก หรือโดนบอกเลิกบ่อยกว่ากัน',
+    'คำบอกเลิกที่เจ็บที่สุดที่เคยได้ยินคืออะไร',
+    'ถ้าย้อนเวลาได้ จะบอกตัวเองตอนอกหักว่าอะไร',
+    'เคยเมาแล้วโทรหา หรือทักหาใครตอนอกหักไหม',
+    'มูฟออนนานที่สุดกี่เดือน ทำอะไรถึงหาย',
+    'ครั้งสุดท้ายที่ร้องไห้คือเมื่อไหร่ เพราะอะไร',
+  ] },
+  ex: { name: '👻 คนเก่า', q: [
+    'ยังเก็บของขวัญจากแฟนเก่าไว้ไหม ชิ้นไหน',
+    'ยังติดตามโซเชียลแฟนเก่าอยู่ไหม',
+    'ถ้าแฟนเก่าทักมาคืนนี้ จะตอบไหม ตอบว่าอะไร',
+    'ข้อดีของแฟนเก่าที่ยังนึกถึงอยู่',
+    'เคยกลับไปคบกับแฟนเก่าไหม รอดไหม',
+    'ถ้าเจอแฟนเก่าในทริปนี้ จะทำยังไง',
+    'เคยแอบดูสตอรี่แฟนเก่าด้วยบัญชีลับไหม',
+    'แฟนเก่าคนไหนที่อยากขอโทษที่สุด เรื่องอะไร',
+    'เคยเปรียบเทียบแฟนใหม่กับแฟนเก่าไหม เรื่องอะไร',
+    'ชื่อแฟนเก่าในมือถือตอนนี้บันทึกไว้ว่าอะไร (อ่านออกเสียง)',
+    'แฟนเก่าเคยพาไปเที่ยวที่ไหนที่ประทับใจที่สุด',
+  ] },
+  money: { name: '💸 เงิน', q: [
+    'ตอนนี้มีเงินเก็บพอใช้กี่เดือน ถ้าไม่ได้ทำงาน',
+    'ของที่ซื้อแพงที่สุดเพราะอารมณ์ชั่ววูบคืออะไร',
+    'เคยยืมเงินเพื่อนแล้วลืมคืนไหม (คืนหรือยัง)',
+    'ถ้าได้เงิน 1 ล้านแต่ต้องใช้ให้หมดใน 1 วัน จะซื้ออะไร',
+    'เงินเดือนแรกในชีวิตใช้ทำอะไร',
+    'ใครในวงนี้น่าจะรวยที่สุดในอีก 10 ปี',
+    'เคยโกหกที่บ้านเรื่องราคาของที่ซื้อไหม',
+    'จ่ายค่าสมาชิกแอปอะไรอยู่ แต่แทบไม่ได้ใช้',
+    'ยอมจ่ายมากที่สุดเท่าไหร่กับอาหารมื้อเดียว',
+    'เคยลงทุน หรือขายของแล้วเจ๊งไหม',
+    'ถ้าแฟนมีรายได้น้อยกว่าคุณมาก โอเคไหม',
+    'ถ้าถูกลอตเตอรี่ 10 ล้าน สิ่งแรกที่จะทำคืออะไร',
+    'ของที่ซื้อแล้วเสียดายที่สุดคืออะไร',
+  ] },
+  work: { name: '💼 การทำงาน', q: [
+    'เคยแอบหลับในที่ทำงานหรือห้องเรียน ที่ไหนเนียนที่สุด',
+    'เจ้านาย หรืออาจารย์ที่จำไม่ลืม เพราะอะไร',
+    'เคยลาป่วยทั้งที่ไม่ได้ป่วยไหม ไปทำอะไรมา',
+    'งานในฝันจริงๆ คืออะไร',
+    'ถ้าลาออกได้พรุ่งนี้ จะไปทำอะไร',
+    'เคยส่งข้อความผิดกลุ่มในงานไหม ส่งว่าอะไร',
+    'สิ่งที่เกลียดที่สุดในการทำงานคืออะไร',
+    'เคยโดนดุแรงที่สุดเรื่องอะไร',
+    'เคยแอบชอบเพื่อนร่วมงาน หรือเพื่อนร่วมห้องไหม',
+    'ถ้าวงนี้เปิดบริษัทด้วยกัน ใครเป็นตำแหน่งอะไร',
+    'เงินเดือนที่ต้องได้ถึงจะ “พอใจ” คือเท่าไหร่',
+  ] },
+  friends: { name: '👯 เพื่อน & ครอบครัว', q: [
+    'ใครในวงนี้ที่รู้จักนานที่สุด เจอกันครั้งแรกยังไง',
+    'ความประทับใจแรกที่มีต่อคนทางขวามือ',
+    'เคยแอบงอนใครในวงนี้แล้วไม่บอกไหม',
+    'เรื่องที่เพื่อนในวงนี้ทำแล้วซึ้งที่สุด',
+    'ถ้าติดเกาะ 1 เดือน จะเลือกใครในวงไปด้วย 2 คน',
+    'ใครในวงนี้ที่น่าจะเก็บความลับได้แย่ที่สุด',
+    'เคยโกหกพ่อแม่ว่าอยู่กับเพื่อนในวงนี้ไหม',
+    'นิสัยที่อยากให้เพื่อนในวงนี้เลิก (พูดดีๆ)',
+    'เพื่อนคนไหนในวงที่โทรหาได้ตอนตีสาม',
+    'ใครในวงนี้ที่ตลกที่สุด มุกไหนที่จำได้',
+    'ถ้าต้องสลับชีวิตกับคนในวงนี้ 1 วัน จะเลือกใคร',
+    'ใครในวงนี้น่าจะแต่งงานก่อน',
+  ] },
+  trip: { name: '✈️ เที่ยว', q: [
+    'ทริปที่ประทับใจที่สุดในชีวิตคือที่ไหน เพราะอะไร',
+    'ถ้าได้ไปเที่ยวฟรี 1 ที่ จะไปไหน กับใครในวงนี้',
+    'เรื่องที่อายที่สุดตอนไปเที่ยวคืออะไร',
+    'ในวงนี้ ใครที่อยากไปเที่ยวด้วยกันสองคนที่สุด',
+    'นิสัยแย่ที่สุดของคุณเวลาไปเที่ยวคืออะไร',
+    'เคยแอบไม่ชอบอะไรในทริปกับเพื่อนแต่ไม่กล้าพูดไหม',
+    'เคยหลงทางหนักที่สุดที่ไหน',
+    'ที่เที่ยวที่ไม่อยากกลับไปอีกแล้วคือที่ไหน',
+    'ถ้าวงนี้ขับรถเที่ยวด้วยกัน ใครจะหลับก่อน',
+    'ของฝากที่ซื้อมาแล้วไม่เคยได้ให้ใครคืออะไร',
+  ] },
+  secret: { name: '🤫 ความลับ', q: [
+    'ความลับเล็กๆ ที่คนในวงนี้ยังไม่รู้คืออะไร',
+    'เคยโกหกคนในวงนี้เรื่องอะไรบ้าง (เรื่องเล็กก็ได้)',
+    'เรื่องที่ทำแล้วพ่อแม่ยังไม่รู้จนถึงวันนี้',
+    'ข้อความล่าสุดที่ส่งหาใครสักคนคืออะไร (อ่านออกเสียง)',
+    'แอปไหนที่เปิดบ่อยที่สุด ขอดูเวลาใช้งานด้วย',
+    'ประวัติการค้นหาล่าสุดใน Google คืออะไร',
+    'รูปล่าสุดในแกลเลอรีคือรูปอะไร โชว์เลย',
+    'เคยแอบอ่านแชตคนอื่นไหม',
+    'นิสัยแปลกๆ ที่ทำคนเดียวตอนอยู่บ้านคืออะไร',
+    'เคยทำผิดแล้วโยนความผิดให้คนอื่นไหม',
+  ] },
+  random: { name: '🎲 จิปาถะ', q: [
+    'ถ้าเกิดใหม่ได้ อยากเกิดเป็นสัตว์อะไร เพราะอะไร',
+    'อาหารที่ไม่กินเด็ดขาดคืออะไร',
+    'เพลงที่ฟังซ้ำบ่อยที่สุดช่วงนี้คือเพลงอะไร',
+    'ให้คะแนนตัวเองเรื่องตรงต่อเวลา 1–10 แล้วให้เพื่อนตัดสิน',
+    'ถ้าวงนี้เป็นวงดนตรี แต่ละคนเล่นตำแหน่งอะไร',
+    'สิ่งที่อยากทำให้ได้ภายในปีนี้คืออะไร',
+    'ถ้ามีพลังพิเศษได้ 1 อย่าง จะเลือกอะไร',
+    'เรื่องที่เชื่อมาตลอด แล้วเพิ่งรู้ว่าไม่จริง',
+    'ถ้าต้องกินอาหารอย่างเดียวไปตลอดชีวิต จะเลือกอะไร',
+  ] },
+}
+
 // ── shared state: in memory only, gone when the page closes ──
 let players = []
 let sober = false
@@ -766,7 +971,8 @@ let game = null
 root.querySelectorAll('.game').forEach(b => b.onclick = () => {
   game = b.dataset.game
   root.querySelectorAll('.game').forEach(x => x.setAttribute('aria-pressed', x === b))
-  for (const g of ['bomb', 'wheel', 'dice', 'cards']) $('g-' + g).hidden = g !== game
+  for (const g of ['bomb', 'wheel', 'dice', 'cards', 'arrow', 'hot']) $('g-' + g).hidden = g !== game
+  if (game !== 'hot') hot.stop()
   refresh()
   $('g-' + game).scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth', block: 'start' })
 })
@@ -775,12 +981,14 @@ function refresh() {
   if (game === 'wheel') wheel.render()
   if (game === 'dice') dice.reset()
   if (game === 'cards') cards.render()
+  if (game === 'arrow') arrow.render()
+  if (game === 'hot') hot.render()
 }
 
 // ── 💣 number bomb ──
 const bomb = {
   max: 100, secret: 0, lo: 1, hi: 100, turn: 0, hist: [], loser: null,
-  reset(m = this.max) { Object.assign(this, { max: m, secret: 1 + rand(m), lo: 1, hi: m, turn: 0, hist: [], loser: null }); $('bombWarn').textContent = ''; this.render() },
+  reset(m = this.max) { Object.assign(this, { max: m, secret: 1 + rand(m), lo: 1, hi: m, turn: 0, hist: [], loser: null, revealing: false }); $('bombWarn').textContent = ''; $('bombSus').innerHTML = ''; this.render() },
   render() {
     chips($('bombMax'), [50, 100, 500].map(m => [m, '1–' + m]), this.max, m => this.reset(m))
     const lost = this.loser !== null
@@ -790,17 +998,37 @@ const bomb = {
     if (lost) loserPanel($('bombLose'), this.loser, `<span style="opacity:.85;font-size:14px">เลขระเบิดคือ ${this.secret}</span>`)
     turnBadge($('bombTurn'), who(this.turn))
     $('bombRange').textContent = `${this.lo} – ${this.hi}`
+    // the last ten numbers: the range turns red and throbs
+    const danger = !lost && this.hi - this.lo + 1 <= 10
+    $('bombRange').classList.toggle('danger', danger)
+    $('bombBarBox').classList.toggle('danger', danger)
+    $('bombDanger').innerHTML = danger ? '<span class="danger-tag">🔥 โซนอันตราย</span>' : ''
     $('bombBar').style.cssText = `margin-left:${(this.lo - 1) / this.max * 100}%;width:${(this.hi - this.lo + 1) / this.max * 100}%`
     $('bombLeft').textContent = `เหลือ ${this.hi - this.lo + 1} เลข`
     $('bombGuess').placeholder = `${this.lo}–${this.hi}`
     $('bombHist').innerHTML = lost ? '' : this.hist.map(h => `<span>${esc(h.who)} <b>${h.n}</b> ${h.up ? '⬆️' : '⬇️'}</span>`).join('')
   },
   guess(n) {
-    if (this.loser !== null) return
+    if (this.loser !== null || this.revealing) return
     if (!Number.isInteger(n) || n < this.lo || n > this.hi) { $('bombWarn').textContent = `ต้องอยู่ระหว่าง ${this.lo}–${this.hi}`; return }
     $('bombWarn').textContent = ''
-    const me = who(this.turn)
-    if (n === this.secret) { this.loser = me; buzz(BOOM); return this.render() }
+    // a short drumroll before the answer: ticks get faster, then boom or phew
+    const me = who(this.turn), sus = $('bombSus'), btn = $('bombForm').querySelector('button')
+    this.revealing = true; btn.disabled = true
+    sus.innerHTML = spinStatus(`💣 ${me ? me + ' ทาย ' : 'ทาย '}${n}…`, true)
+    sfx.unlock()
+    const ms = reduced() ? 0 : 1100
+    let k = 0
+    const drum = () => { if (!this.revealing) return; sfx.click(900, 0.03); buzz(8); if (++k < 12) setTimeout(drum, 140 - k * 8) }
+    if (ms) drum()
+    setTimeout(() => {
+      this.revealing = false; btn.disabled = false
+      if (n === this.secret) { sus.innerHTML = ''; this.loser = me; buzz(BOOM); return this.render() }
+      sus.innerHTML = Math.abs(n - this.secret) <= 2 ? spinStatus('😱 เกือบโดน!', true) : spinStatus('😮‍💨 รอด!', false)
+      this.step(n, me)
+    }, ms)
+  },
+  step(n, me) {
     if (n < this.secret) this.lo = n + 1; else this.hi = n - 1
     this.hist = [{ who: me, n, up: n < this.secret }, ...this.hist].slice(0, 6)
     buzz(30)
@@ -846,24 +1074,27 @@ const wheel = {
     const s = this.slices()
     if (this.spinning || s.length < 2) return
     if (this.result !== null && players.length) { this.turn++; this.result = null; return this.render() }
-    const idx = rand(s.length), seg = 360 / s.length
-    const mid = (idx + 0.5) * seg + (Math.random() - 0.5) * seg * 0.7
-    this.rot = this.rot - (this.rot % 360) + 360 * 5 + (360 - mid)
-    const ms = reduced() ? 0 : 3600
-    const svg = $('wheel')
-    svg.style.transitionDuration = ms + 'ms'
-    svg.style.transform = `rotate(${this.rot}deg)`
+    const idx = rand(s.length), slots = s.length, seg = 360 / slots
+    // the wheel turns under a fixed pointer at the top: slice i is under it when the
+    // rotation puts the slice's middle at 0°, i.e. rotation ≡ −(i + 0.5) × seg
+    const angleOf = i => (360 - (i + 0.5) * seg) % 360
+    const slotOf = x => Math.floor(((((-x) % 360) + 360) % 360) / seg) % slots
+    const plan = planSpin({ from: this.rot, slots, target: idx, angleOf, slotOf, spread: 0.6, name: i => `“${s[i]}”` })
     this.spinning = true; this.result = null
     $('wheelSpin').disabled = true
-    $('wheelResult').innerHTML = '<span class="muted">กำลังหมุน…</span>'
-    setTimeout(() => {
-      this.spinning = false; this.result = s[idx]
-      $('wheelSpin').disabled = false
-      const name = who(this.turn)
-      $('wheelResult').innerHTML = `<div class="pop">${name ? `<div class="muted">${esc(name)}</div>` : ''}<b>${esc(this.result)}</b></div>`
-      buzz(60)
-      this.render()
-    }, ms + 50)
+    const paths = () => $('wheel').querySelectorAll('path')
+    playSpin(plan.S, {
+      el: $('wheel'), slotOf,
+      onSlot: slot => paths().forEach((p, k) => p.classList.toggle('on', k === slot)),
+      onSay: (say, tease) => { $('wheelResult').innerHTML = spinStatus(say, tease) },
+      onDone: () => {
+        this.rot = plan.end; this.spinning = false; this.result = s[idx]
+        $('wheelSpin').disabled = false
+        const name = who(this.turn)
+        $('wheelResult').innerHTML = `<div class="pop">${name ? `<div class="muted">${esc(name)}</div>` : ''}<b>${esc(this.result)}</b></div>`
+        this.render()
+      },
+    })
   },
 }
 $('wheelSpin').onclick = () => wheel.spin()
@@ -893,7 +1124,7 @@ function verdict(v) {
   return d.safe
 }
 const dice = {
-  count: 2, mode: 'rules', values: [6, 6], rolling: false, rolled: false, turn: 0,
+  count: 2, mode: 'rules', values: [6, 6], rolling: false, rolled: false, turn: 0, landed: 0, teetering: -1,
   contenders: [], scores: {}, round: 1, loser: null,
   reset() {
     Object.assign(this, { rolled: false, turn: 0, contenders: players.map((_, i) => i), scores: {}, round: 1, loser: null })
@@ -918,10 +1149,10 @@ const dice = {
     turnBadge($('diceTurn'), name)
     $('diceRound').hidden = !(this.mode === 'race' && this.round > 1)
     $('diceRound').textContent = `เสมอ! ทอยใหม่รอบที่ ${this.round}`
-    $('dice').innerHTML = this.values.map(dieSvg).join('')
-    $('dice').classList.toggle('rolling', this.rolling)
+    // dice still tumbling shake; landed ones sit still; one may teeter on an edge before it settles
+    $('dice').innerHTML = this.values.map((v, i) => dieSvg(v).replace('<svg', `<svg class="${i === this.teetering ? 'teeter' : this.rolling && i >= this.landed ? 'tumble' : ''}"`)).join('')
     const total = this.values.reduce((a, b) => a + b, 0)
-    $('diceResult').innerHTML = this.rolled ? `<div class="pop"><div class="muted">รวม ${total}</div>${this.mode === 'rules' ? `<b>${esc(verdict(this.values))}</b>` : ''}</div>` : ''
+    $('diceResult').innerHTML = this.teetering >= 0 ? spinStatus('เอ๊ะ… เกือบล้ม! 🤏', true) : this.rolling ? spinStatus('ลุ้น… 🎲', false) : this.rolled ? `<div class="pop"><div class="muted">รวม ${total}</div>${this.mode === 'rules' ? `<b>${esc(verdict(this.values))}</b>` : ''}</div>` : ''
     $('diceScores').innerHTML = this.mode === 'race' ? this.contenders.filter(i => this.scores[i] !== undefined).map(i => `<span>${esc(players[i])} <b>${this.scores[i]}</b></span>`).join('') : ''
   },
   press() {
@@ -932,13 +1163,38 @@ const dice = {
   roll() {
     if (this.rolling || this.loser !== null || (this.mode === 'race' && players.length < 2)) return
     const end = Array.from({ length: this.count }, () => 1 + rand(6))
-    this.rolling = true; this.rolled = false
-    let ticks = reduced() ? 0 : 9
-    const tick = () => {
-      if (ticks-- > 0) { this.values = end.map(() => 1 + rand(6)); this.render(); return setTimeout(tick, 70) }
-      this.values = end; this.rolling = false; this.rolled = true; buzz(50)
+    this.rolling = true; this.rolled = false; this.landed = 0; this.teetering = -1
+    sfx.unlock()
+    const finish = () => {
+      this.values = end; this.rolling = false; this.rolled = true; this.teetering = -1; buzz(50)
       this.render()
       if (this.mode === 'race') this.settle(end.reduce((a, b) => a + b, 0))
+    }
+    if (reduced()) return finish()
+    // tumble for a while, then the dice land one at a time; sometimes one teeters first
+    const teeter = Math.random() < 0.35 ? rand(end.length) : -1
+    let ticks = 0
+    const tick = () => {
+      ticks++
+      this.values = end.map((v, i) => i < this.landed ? v : 1 + rand(6))
+      sfx.click(700 + rand(500), 0.02)
+      if (ticks > 14 && ticks % 5 === 0) {
+        if (this.landed === teeter) {
+          // show a face that isn't the real one, wobble on it, then tip over onto the real face
+          this.teetering = teeter
+          this.values[teeter] = end[teeter] === 6 ? 5 : end[teeter] + 1
+          this.render(); buzz([30, 50, 30])
+          return setTimeout(() => { this.teetering = -1; this.landed++; sfx.click(520, 0.08); buzz(40); next() }, 900)
+        }
+        this.landed++; sfx.click(520, 0.06); buzz(30)
+      }
+      next()
+    }
+    const next = () => {
+      if (this.landed >= end.length) return finish()
+      this.values = end.map((v, i) => i < this.landed ? v : this.values[i])
+      this.render()
+      setTimeout(tick, 55 + ticks * 5)
     }
     tick()
   },
@@ -958,26 +1214,34 @@ $('dice').onclick = () => dice.roll()
 $('diceBtn').onclick = () => dice.press()
 
 // ── 🃏 cards ──
-const DECK_NAMES = { warm: C.decks.warm.name, truth: C.decks.truth.name, hard: C.decks.hard.name, custom: 'การ์ดของแก๊ง' }
+const DECK_NAMES = { warm: C.decks.warm.name, truth: C.decks.truth.name, hard: C.decks.hard.name, ...Object.fromEntries(Object.entries(QBANK).map(([k, v]) => [k, v.name])), custom: 'การ์ดของแก๊ง' }
+// about one card in seven comes with a twist
+const SPECIALS = [
+  { title: '🔥 สองเท่า!', note: () => sober ? 'ทำข้อนี้ 2 รอบ' : 'ทำ 2 เท่า หรือดื่ม 2 อึก' },
+  { title: '🔄 โยนต่อ!', note: () => 'ส่งการ์ดนี้ให้ {p} ทำแทน' },
+  { title: '👥 ทั้งวง!', note: () => 'ทุกคนในวงต้องทำ / ตอบข้อนี้' },
+  { title: '🛡️ บัตรรอด', note: () => 'เก็บไว้ ใช้ข้ามคำสั่งครั้งหน้าได้ 1 ครั้ง' },
+]
 const cards = {
   chosen: ['warm', 'truth'], custom: [], pile: [], card: null, turn: 0,
   build() {
     this.pile = shuffle([
-      ...this.chosen.filter(k => k !== 'custom').flatMap(k => C.decks[k].cards.map(l => ({ deck: k, line: l }))),
+      ...this.chosen.filter(k => k !== 'custom').flatMap(k => (C.decks[k] ? C.decks[k].cards : QBANK[k].q).map(l => ({ deck: k, line: l }))),
       ...(this.chosen.includes('custom') ? this.custom.map(l => ({ deck: 'custom', line: l })) : []),
     ])
   },
   render() {
-    const keys = ['warm', 'truth', 'hard', ...(this.custom.length ? ['custom'] : [])]
+    const keys = ['warm', 'truth', 'hard', ...Object.keys(QBANK), ...(this.custom.length ? ['custom'] : [])]
     chips($('decks'), keys.map(k => [k, DECK_NAMES[k] + (k === 'custom' ? ` (${this.custom.length})` : '')]), this.chosen, k => {
       this.chosen = this.chosen.includes(k) ? (this.chosen.length > 1 ? this.chosen.filter(x => x !== k) : this.chosen) : [...this.chosen, k]
       this.build(); this.card = null; this.render()
     })
     turnBadge($('cardsTurn'), this.card ? who(this.turn) : '')
     $('pcard').innerHTML = this.card
-      ? `<div class="d-${this.card.deck} flip"><small>${esc(DECK_NAMES[this.card.deck])}</small><p></p><span style="font-size:26px">🐾</span></div>`
+      ? `<div class="d-${this.card.deck} flip${this.card.special ? ' special' : ''}">${this.card.special ? `<em class="ribbon">${this.card.special.title}</em>` : `<small>${esc(DECK_NAMES[this.card.deck])}</small>`}<p></p>${this.card.special ? '<em class="sp-note"></em>' : '<span style="font-size:26px">🐾</span>'}</div>`
       : '<div class="back"><span style="font-size:52px">🃏</span><p>แตะเพื่อจั่วการ์ด</p></div>'
     if (this.card) $('pcard').querySelector('p').textContent = this.card.text
+    if (this.card && this.card.special) $('pcard').querySelector('.sp-note').textContent = this.card.special.text
     $('cardsLeft').textContent = `เหลือ ${this.pile.length} ใบ`
     $('drawBtn').textContent = this.card ? (players.length ? 'ตาคนถัดไป →' : 'จั่วใบต่อไป') : 'จั่วการ์ด'
     $('customList').innerHTML = ''
@@ -991,16 +1255,32 @@ const cards = {
     })
   },
   draw() {
+    if (this.drawing) return
     if (!this.pile.length) this.build()
     if (!this.pile.length) return
     if (this.card) this.turn++
     const c = this.pile.shift()
     const me = who(this.turn)
     const others = players.filter(p => p !== me)
-    const target = others.length ? others[rand(others.length)] : 'คนข้างๆ'
-    this.card = { deck: c.deck, text: line(c.line).split('{p}').join(target) }
-    buzz(25)
-    this.render()
+    const someone = () => others.length ? others[rand(others.length)] : 'คนข้างๆ'
+    const sp = Math.random() < 0.15 ? pick(SPECIALS) : null
+    const card = { deck: c.deck, text: line(c.line).split('{p}').join(someone()), special: sp && { title: sp.title, text: sp.note().split('{p}').join(someone()) } }
+    // shuffle-shake the deck for a moment before turning the card over
+    this.drawing = true
+    sfx.unlock()
+    const pc = $('pcard')
+    turnBadge($('cardsTurn'), who(this.turn))
+    pc.classList.add('shuffling')
+    let k = 0
+    const rattle = () => { if (this.drawing && k++ < 5) { sfx.click(1200, 0.02); setTimeout(rattle, 100) } }
+    rattle()
+    setTimeout(() => {
+      pc.classList.remove('shuffling')
+      this.drawing = false; this.card = card
+      buzz(card.special ? [40, 60, 120] : 25)
+      if (card.special) sfx.click(1046, 0.25)
+      this.render()
+    }, reduced() ? 0 : 600)
   },
 }
 $('pcard').onclick = $('drawBtn').onclick = () => cards.draw()
@@ -1017,6 +1297,274 @@ $('cardForm').onsubmit = e => {
   cards.render()
 }
 cards.build()
+
+// ── 🎯 spin the arrow: whoever it points at answers the spinner's question, or drinks ──
+const E = {
+  lin: p => p,
+  outCubic: p => 1 - Math.pow(1 - p, 3),
+  outQuart: p => 1 - Math.pow(1 - p, 4),
+  inOutSine: p => -(Math.cos(Math.PI * p) - 1) / 2,
+  outBack: p => { const c = 1.4; return 1 + (c + 1) * Math.pow(p - 1, 3) + c * Math.pow(p - 1, 2) },   // a small overshoot, then settle
+}
+const pick = a => a[rand(a.length)]
+
+// ── shared spin engine (arrow + party wheel): long spins with fake stops, reversals, wobbles ──
+// Works on one number x = the element's rotation in degrees. Each tool says where seat i sits (angleOf)
+// and which seat a rotation points at (slotOf); the engine plans segments and plays them frame by frame.
+const sfx = {
+  ctx: null,
+  unlock() { try { this.ctx = this.ctx || new (window.AudioContext || window.webkitAudioContext)(); this.ctx.resume() } catch {} },
+  click(freq = 1700, dur = 0.025) {   // a short "tick" like a prize wheel's clicker
+    const c = this.ctx
+    if (!c || c.state !== 'running') return
+    const o = c.createOscillator(), g = c.createGain()
+    o.type = 'triangle'; o.frequency.value = freq
+    g.gain.setValueAtTime(0.09, c.currentTime); g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + dur)
+    o.connect(g).connect(c.destination); o.start(); o.stop(c.currentTime + dur)
+  },
+}
+function planSpin({ from, slots, target, angleOf, slotOf, spread, name }) {
+  const seg = 360 / slots
+  const jit = () => (Math.random() - 0.5) * seg * spread
+  const decoy = () => { let d; do d = rand(slots); while (d === target); return d }
+  // the next rotation (moving forward) at which seat idx is selected, `turns` laps on from `x`
+  const after = (x, idx, turns) => x - (x % 360) + 360 * turns + angleOf(idx) + jit()
+  const base = from
+  const trick = pick(['plain', 'tease', 'tease', 'double', 'overshoot', 'wobble', 'reverse'])
+  const S = []
+  let a = from
+  const go = (to, ms, ease, say) => { S.push({ from: a, to, ms, ease, say }); a = to }
+  const hold = (ms, say) => S.push({ from: a, to: a, ms, ease: E.lin, say, tease: true })
+  if (trick === 'plain') {
+    go(after(base, target, 5), 5600, E.outQuart, 'กำลังหมุน…')
+  } else if (trick === 'tease' || trick === 'double') {
+    const d1 = decoy()
+    go(after(base, d1, 4), 4400, E.outCubic, 'กำลังหมุน…')
+    hold(950, `หยุดที่ ${name(d1)}…?`)
+    if (trick === 'double') {
+      let d2; do d2 = decoy(); while (d2 === d1)
+      go(after(a, d2, 1), 1900, E.inOutSine, 'ยังไม่จบ! 🌀')
+      hold(850, `หรือ ${name(d2)}…?`)
+    }
+    go(after(a, target, 1), 2300, E.outBack, trick === 'double' ? 'อีกรอบ! 😈' : 'ยังไม่จบ! 🌀')
+  } else if (trick === 'overshoot') {
+    const final = after(base, target, 5)
+    go(final + seg * 0.85, 5000, E.outCubic, 'กำลังหมุน…')
+    hold(700, 'เลยไปแล้ว…?')
+    go(final, 1400, E.inOutSine, 'ถอยกลับมา! 👀')
+  } else if (trick === 'wobble') {
+    const final = after(base, target, 5)
+    go(final - seg * 0.55, 4800, E.outCubic, 'กำลังหมุน…')
+    ;[0.5, -0.42, 0.32, -0.2, 0.1].forEach((k, i) => go(final + seg * k, 330 + i * 40, E.inOutSine, 'ลังเล… 🤔'))
+    go(final, 300, E.inOutSine, 'ลังเล… 🤔')
+  } else {   // reverse: almost stops, then spins back the other way at least 1.5 laps
+    const d1 = decoy()
+    go(after(base, d1, 4), 4000, E.outCubic, 'กำลังหมุน…')
+    hold(600, `หยุดที่ ${name(d1)}…?`)
+    const start = a - 540
+    go(start - ((((start - angleOf(target)) % 360) + 360) % 360) + jit(), 2800, E.outCubic, 'หมุนกลับ! 🔄')
+  }
+  if (reduced()) return { S: [{ from, to: a, ms: 0, ease: E.lin }], end: a }
+  return { S, end: a }
+}
+function playSpin(S, { el, slotOf, onSlot, onSay, onDone }) {
+  sfx.unlock()
+  el.style.transition = 'none'
+  let i = 0, t0 = performance.now(), lastSlot = null, lastSay
+  const frame = now => {
+    const s = S[i], p = s.ms ? Math.min(1, (now - t0) / s.ms) : 1
+    const x = s.from + (s.to - s.from) * s.ease(p)
+    el.style.transform = `rotate(${x}deg)`
+    const slot = slotOf(x)
+    if (slot !== lastSlot) { lastSlot = slot; sfx.click(); buzz(6); onSlot(slot) }
+    if (s.say !== lastSay) { lastSay = s.say; onSay(s.say || '', !!s.tease); if (s.tease) buzz([40, 60, 40]) }
+    if (p < 1) return requestAnimationFrame(frame)
+    if (++i < S.length) { t0 = now; return requestAnimationFrame(frame) }
+    sfx.click(520, 0.12); buzz(80)
+    onSlot(null)
+    onDone()
+  }
+  requestAnimationFrame(frame)
+}
+const spinStatus = (say, tease) => `<div class="spin-status${tease ? ' tease' : ''}">${esc(say)}</div>`
+const MISSIONS = [
+  'เต้นท่าเด็ด 10 วินาที', 'ทำเสียงสัตว์ที่เพื่อนเลือก', 'เล่ามุกให้วงขำ ถ้าไม่ขำทำใหม่',
+  'ชมคนทางซ้าย 3 อย่างแบบจริงใจ', 'ร้องเพลงที่เพื่อนเลือก 1 ท่อน', 'ทำหน้าตลกค้างไว้จนตาต่อไป',
+  'โพสต์ท่าแฟชั่นให้เพื่อนถ่ายรูป', 'พูดด้วยสำเนียงที่เพื่อนเลือกจนตาต่อไป', 'ทำท่าแพลงก์ 20 วินาที',
+  'เลียนแบบคนในวงนี้ ให้ทุกคนทายว่าใคร',
+]
+const arrow = {
+  turn: 0, asker: 0, rot: 0, spinning: false, target: null, choice: null, q: '', mission: '',
+  topics: Object.keys(QBANK), qTopic: 'random',
+  ask() { this.qTopic = pick(this.topics); this.q = pick(QBANK[this.qTopic].q) },
+  // which question topics are in play (at least one stays on)
+  renderTopics() {
+    chips($('arrowTopics'), Object.keys(QBANK).map(k => [k, QBANK[k].name]), this.topics, k => {
+      this.topics = this.topics.includes(k) ? (this.topics.length > 1 ? this.topics.filter(x => x !== k) : this.topics) : [...this.topics, k]
+      this.renderTopics()
+    })
+  },
+  seats() { return players.length >= 2 ? players : [] },
+  render() {
+    const seats = this.seats(), board = $('arrowBoard'), n = seats.length
+    board.querySelectorAll('.seat, .arrow-hint').forEach(e => e.remove())
+    seats.forEach((name, i) => {
+      const a = i / n * Math.PI * 2, s = document.createElement('span')
+      s.className = 'seat' + (i === this.turn % n ? ' me' : '') + (i === this.target && !this.spinning ? ' hit' : '')
+      s.style.left = (50 + 43 * Math.sin(a)) + '%'; s.style.top = (50 - 43 * Math.cos(a)) + '%'
+      s.textContent = name
+      board.append(s)
+    })
+    if (!n) { const t = document.createElement('div'); t.className = 'arrow-hint'; t.textContent = 'ลูกศรชี้ใคร คนนั้นโดน · ใส่ชื่อด้านบนเพื่อเรียงเป็นวง'; board.append(t) }
+    this.renderTopics()
+    turnBadge($('arrowTurn'), n ? seats[this.turn % n] + ' หมุน' : '')
+    const done = this.target !== null && !this.spinning
+    $('arrowBtn').hidden = done && !this.choice
+    $('arrowBtn').disabled = this.spinning
+    $('arrowBtn').textContent = done && this.choice ? (n ? 'หมุนต่อ → ตาของ ' + seats[this.turn % n] : 'หมุนอีกครั้ง') : 'หมุนเลย!'
+    this.renderResult()
+  },
+  renderResult() {
+    const box = $('arrowResult'), seats = this.seats(), n = seats.length
+    if (this.target === null || this.spinning) { box.innerHTML = ''; return }
+    const who = n ? esc(seats[this.target]) : 'คนที่ลูกศรชี้', asker = n ? esc(seats[this.asker]) : 'คนที่กดหมุน'
+    if (!this.choice) {
+      box.innerHTML = `<div class="result pop"><b>🎯 ${who} โดน!</b><span class="muted">เลือกเลย: ตอบคำถามของ ${asker} หรือ${sober ? 'รับภารกิจ' : 'ดื่ม'}</span></div>
+        <div class="choice"><button type="button" class="ask">💬 ตอบคำถาม</button><button type="button" class="drink${sober ? ' sober' : ''}">${sober ? '🎯 รับภารกิจ' : '🍺 ดื่ม'}</button></div>`
+      box.querySelector('.ask').onclick = () => { this.choose('ask'); this.ask(); buzz(25); this.render() }
+      box.querySelector('.drink').onclick = () => { this.choose('drink'); this.mission = MISSIONS[rand(MISSIONS.length)]; buzz([60, 40, 60]); this.render() }
+      return
+    }
+    if (this.choice === 'ask') {
+      box.innerHTML = `<div class="qcard pop"><span class="muted">${asker} ถาม ${who} ตอบ</span><span class="qtag">${esc(QBANK[this.qTopic].name)}</span><b></b><button type="button" class="link" style="align-self:center">🔀 สุ่มคำถามใหม่</button><span class="muted" style="font-size:12.5px">หรือให้ ${asker} ถามเองเลยก็ได้ · ไม่ตอบ = ${sober ? 'รับภารกิจ' : 'ดื่ม 2 อึก'}</span></div>`
+      box.querySelector('b').textContent = this.q
+      box.querySelector('button').onclick = () => { this.ask(); this.renderResult() }
+    } else {
+      box.innerHTML = `<div class="qcard drinkcard pop"><span class="muted">${who}</span><b></b></div>`
+      box.querySelector('b').textContent = sober ? '🎯 ภารกิจ: ' + this.mission : 'ดื่ม 1 อึก 🍺'
+    }
+  },
+  // the one who got picked spins next
+  choose(c) { this.choice = c; if (this.seats().length && this.target >= 0) this.turn = this.target },
+  press() {
+    if (this.spinning) return
+    const seats = this.seats(), n = seats.length
+    this.target = null; this.choice = null
+    const slots = n || 8                                                     // no names: 8 imaginary spots for clicks and decoys
+    const seg = 360 / slots
+    let t
+    if (n) {
+      const me = this.asker = this.turn % n
+      t = rand(n - 1); if (t >= me) t++                                     // never point back at the spinner
+      this.target = t
+    } else { this.target = -1; t = rand(slots) }
+    // the arrow points up at 0°, seat i sits at i × seg clockwise
+    const slotOf = x => ((Math.round(x / seg) % slots) + slots) % slots
+    const plan = planSpin({ from: this.rot, slots, target: t, angleOf: i => i * seg, slotOf, spread: 0.4, name: i => n ? seats[i] : 'คนนี้' })
+    this.spinning = true; this.render()
+    const board = $('arrowBoard')
+    playSpin(plan.S, {
+      el: $('arrow'), slotOf,
+      onSlot: slot => board.querySelectorAll('.seat').forEach((el, k) => el.classList.toggle('near', k === slot)),
+      onSay: (say, tease) => { $('arrowResult').innerHTML = spinStatus(say, tease) },
+      onDone: () => { this.rot = plan.end; this.spinning = false; this.render() },
+    })
+  },
+}
+$('arrowBtn').onclick = () => arrow.press()
+
+// ── 💥 pass the bomb: answer one word in the category, pass the phone, a secret timer decides who loses ──
+const HOT_CATS = [
+  'จังหวัดในไทย', 'ผลไม้', 'ยี่ห้อรถ', 'อาหารไทย', 'ประเทศ', 'สัตว์', 'ของในเซเว่น', 'เมนูกาแฟ/ชา',
+  'ยี่ห้อมือถือ', 'ตัวละครการ์ตูน', 'กีฬา', 'อาชีพ', 'สถานที่เที่ยวในไทย', 'ขนมไทย', 'สีต่างๆ', 'ของในห้องครัว',
+  'แอปในมือถือ', 'คำที่ขึ้นต้นด้วย “ก”', 'คำที่ลงท้ายด้วย “ม”', 'ชื่อวงดนตรี/ศิลปิน', 'เครื่องดื่ม', 'อวัยวะในร่างกาย',
+  'ยี่ห้อเสื้อผ้า/รองเท้า', 'เมืองในญี่ปุ่น', 'ของที่ต้องพกไปเที่ยว',
+]
+const hot = {
+  cat: HOT_CATS[rand(HOT_CATS.length)], running: false, lost: false, passes: 0, timer: 0, t0: 0, dur: 0, audio: null,
+  render() {
+    const st = $('hotStage')
+    st.classList.toggle('live', this.running)
+    st.hidden = this.lost
+    $('hotLose').hidden = !this.lost
+    $('hotCat').textContent = this.cat
+    $('hotLabel').textContent = this.running ? 'หมวด — ตอบแล้วส่งต่อ!' : 'หมวด'
+    $('hotPasses').textContent = this.running ? `ส่งต่อแล้ว ${this.passes} ครั้ง · แตะปุ่มทุกครั้งที่ส่ง` : ''
+    $('hotBtn').textContent = this.running ? 'ส่งต่อแล้ว 👉' : this.lost ? 'เล่นอีกรอบ 💣' : 'เริ่ม! 💣'
+    $('hotSkip').hidden = this.running
+    if (!this.running) $('hotEvent').hidden = true
+    if (!this.running) { st.style.setProperty('--heat', 0); st.style.setProperty('--beat', '1s') }
+  },
+  beep(freq, dur, vol = 0.12) {
+    const a = this.audio
+    if (!a || a.state !== 'running') return
+    const o = a.createOscillator(), g = a.createGain()
+    o.type = 'square'; o.frequency.value = freq
+    g.gain.setValueAtTime(vol, a.currentTime); g.gain.exponentialRampToValueAtTime(0.001, a.currentTime + dur)
+    o.connect(g).connect(a.destination); o.start(); o.stop(a.currentTime + dur)
+  },
+  start() {
+    try { this.audio = this.audio || new (window.AudioContext || window.webkitAudioContext)(); this.audio.resume() } catch {}
+    this.running = true; this.lost = false; this.passes = 0
+    this.dur = 15000 + Math.random() * 30000          // secret: 15–45 s
+    this.t0 = performance.now()
+    // one or two surprise events somewhere in the middle, and sometimes a scary silence
+    this.events = Array.from({ length: 1 + rand(2) }, () => ({ at: 0.25 + Math.random() * 0.55, done: false })).sort((a, b) => a.at - b.at)
+    this.hush = Math.random() < 0.35 ? { at: 0.35 + Math.random() * 0.4, done: false } : null
+    this.render(); this.tick()
+  },
+  tick() {
+    if (!this.running) return
+    const p = Math.min(1, (performance.now() - this.t0) / this.dur)
+    if (p >= 1) return this.explode()
+    const ev = this.events.find(e => !e.done && p >= e.at)
+    if (ev) { ev.done = true; this.surprise() }
+    if (this.hush && !this.hush.done && p >= this.hush.at) {
+      // the ticking stops dead for a moment… then comes back
+      this.hush.done = true
+      $('hotLabel').textContent = '…เงียบ…'
+      return (this.timer = setTimeout(() => { $('hotLabel').textContent = 'หมวด — ตอบแล้วส่งต่อ!'; this.tick() }, 1400))
+    }
+    // ticks speed up from ~0.8 s to ~0.12 s apart, the screen warms up and the bomb throbs faster
+    const gap = 800 - 680 * p * p
+    const st = $('hotStage')
+    st.style.setProperty('--heat', (p * p).toFixed(3)); st.style.setProperty('--beat', (gap * 1.6 / 1000).toFixed(2) + 's')
+    this.beep(p > 0.75 ? 1320 : 990, 0.05)
+    buzz(p > 0.75 ? 25 : 12)
+    this.timer = setTimeout(() => this.tick(), gap)
+  },
+  pass() { this.passes++; this.beep(660, 0.04, 0.08); this.render() },
+  surprise() {
+    const kinds = ['reverse', 'category', 'category', 'whisper', 'skip', 'slow']
+    const kind = pick(kinds)
+    let say
+    if (kind === 'category') {
+      let c; do c = HOT_CATS[rand(HOT_CATS.length)]; while (c === this.cat)
+      this.cat = c; $('hotCat').textContent = c
+      say = '🔀 เปลี่ยนหมวด!'
+    } else say = { reverse: '🔄 กลับทิศ! ส่งย้อนทาง', whisper: '🤫 ตอบแบบกระซิบเท่านั้น', skip: '⏩ ข้ามคนถัดไป 1 คน', slow: '🐢 ห้ามตอบซ้ำตัวอักษรแรก' }[kind]
+    const el = $('hotEvent')
+    el.hidden = false; el.textContent = say
+    el.style.animation = 'none'; el.offsetWidth; el.style.animation = ''
+    this.beep(1568, 0.12, 0.15); buzz([60, 40, 60])
+  },
+  explode() {
+    this.running = false; this.lost = true
+    clearTimeout(this.timer)
+    this.beep(110, 0.7, 0.3); this.beep(70, 0.9, 0.3)
+    loserPanel($('hotLose'), 'คนที่ถือมือถืออยู่', `<span style="opacity:.85;font-size:14px">หมวด “${esc(this.cat)}” · ส่งต่อไป ${this.passes} ครั้ง</span>`)
+    buzz(BOOM)
+    this.render()
+  },
+  stop() { if (!this.running) return; this.running = false; clearTimeout(this.timer); this.render() },
+}
+$('hotBtn').onclick = () => {
+  if (hot.running) return hot.pass()
+  if (hot.lost) hot.cat = HOT_CATS[rand(HOT_CATS.length)]
+  hot.start()
+}
+$('hotSkip').onclick = () => { let c; do c = HOT_CATS[rand(HOT_CATS.length)]; while (c === hot.cat); hot.cat = c; hot.lost = false; hot.render() }
+addEventListener('hashchange', () => hot.stop())   // leaving the party tab stops the ticking
 
 renderNames()
 })()
